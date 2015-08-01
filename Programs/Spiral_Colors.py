@@ -25,6 +25,7 @@ pyglow.all(0)
 ''' Feel Free to modify the brightness on the following line '''
 led_brightness = 100
 
+# Functions
 def red_leds(sleep_speed):
     sleep_speed = sleep_speed
     # Arm 1, Red
@@ -202,5 +203,6 @@ def go_really_fast():
         # decrease counter
         counter -= 1
     increase_speed()
-    
+
+# Start the program    
 increase_speed()
