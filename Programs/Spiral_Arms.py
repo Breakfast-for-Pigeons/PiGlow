@@ -25,6 +25,7 @@ pyglow.all(0)
 ''' Feel free to modify the brightness setting below '''
 led_brightness = 100
 
+# Functions
 def turn_on_leds(sleep_speed):
     ''' Uncomment the following print statement for feedback while the program is running '''
     #print "Turning on LEDs..."
@@ -83,5 +84,6 @@ def run_10_times():
         # Decrease counter
         counter -= 1
     increase_speed()
-    
+
+# Start the program   
 increase_speed()
