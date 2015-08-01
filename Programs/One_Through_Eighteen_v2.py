@@ -24,6 +24,7 @@ pyglow = PyGlow()
 # Initialize
 pyglow.all(0)
 
+# Functions
 def run_10_times():
     ''' Uncomment the following line for feedback while the program is running '''
     #print "Running 10 times..."
@@ -68,4 +69,5 @@ def increase_speed():
         sleep_speed -= 0.05
     run_10_times()
 
+# Start the program
 increase_speed()
