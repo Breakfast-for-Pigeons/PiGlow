@@ -20,6 +20,7 @@ pyglow = PyGlow()
 # Initialize
 pyglow.all(0)
 
+# Functions
 def run_continuously():
     ''' Uncomment the following line if you want feedback while the program is running '''
     #print "Running continously..."
@@ -59,4 +60,5 @@ def increase_speed():
         sleep(sleep_speed)
     run_continuously()
 
+# Start the program
 increase_speed()
