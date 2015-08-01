@@ -20,6 +20,7 @@ pyglow = PyGlow()
 # Initialize
 pyglow.all(0)
 
+# Functions
 def fading_spiral_arms():
     sleep_speed = 0.01
     # Turn LED 1 
@@ -760,7 +761,7 @@ def fading_spiral_arms():
     pyglow.led(18, 0)
     sleep(sleep_speed)
     
-
+# Start the program
 while True:
     fading_spiral_arms()
     sleep(0.5)
