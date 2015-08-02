@@ -3,7 +3,7 @@
 ################################################################
 # Description:                                                 #
 # This program lights up the individual colors one at at time, #
-# starting with the insice white leds and moving out to the    #
+# starting with the inside white leds and moving out to the    #
 # outside red. It gradually increases the speed and then goes  #
 # through the entire process again. It's Spiral Colors with    #
 # the order of the LEDs reversed.                              #
