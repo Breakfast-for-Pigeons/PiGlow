@@ -1,0 +1,58 @@
+################################################################
+#                         Wiggling Worm                        #
+################################################################
+# Description:                                                 #
+# The title explains it.  I originally had an idea called      #
+# "Spinning Snakes" where I took my snake program and sped     #
+# it up. This was the unexpected result.                       #
+#                                                              #
+# Requirements: PyGlow.py                                      #
+#                                                              #
+# Author: Paul Ryan                                            #
+#                                                              #
+################################################################
+
+from PyGlow import PyGlow
+from time import sleep
+
+pyglow = PyGlow()
+
+# Initialize
+pyglow.all(0)
+
+# Variables
+sleep_speed = 1
+
+# Lists
+# Snake 12 LEDs (Same lights as Snake 21 - Since they are not slithering, the order doesn't matter)
+snake_12_leds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18]
+# Snake 13 LEDs (Same lights as Snake 31 - Since they are not slithering, the order doesn't matter)
+snake_13_leds = [1, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17, 18]
+# Snake 23 LEDs (Same lights as Snake 32 - Since they are not slithering, the order doesn't matter)
+snake_23_leds = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+
+def snake_12():
+    pyglow.set_leds(snake_12_leds, 100)
+    pyglow.update_leds()
+    sleep(sleep_speed)
+    pyglow.set_leds(snake_12_leds, 0)
+    pyglow.update_leds()
+
+def snake_13():
+    pyglow.set_leds(snake_13_leds, 100)
+    pyglow.update_leds()
+    sleep(sleep_speed)
+    pyglow.set_leds(snake_13_leds, 0)
+    pyglow.update_leds()
+    
+def snake_23():
+    pyglow.set_leds(snake_23_leds, 100)
+    pyglow.update_leds()
+    sleep(sleep_speed)
+    pyglow.set_leds(snake_23_leds, 0)
+    pyglow.update_leds()
+
+while True:
+    snake_12()
+    snake_23()
+    snake_13()
