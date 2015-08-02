@@ -1,5 +1,5 @@
 ################################################################
-#                        Inward Out                            #
+#                        Inside Out                            #
 ################################################################
 # Description:                                                 #
 # This program lights up the individual colors one at at time, #
