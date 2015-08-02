@@ -26,7 +26,6 @@ pyglow.all(0)
 ''' Feel free to change the brightness setting '''
 led_brightness = 100
 
-
 # Functions
 def red_leds_on(sleep_speed):
     sleep_speed = sleep_speed
