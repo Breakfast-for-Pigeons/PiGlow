@@ -1,5 +1,5 @@
 ################################################################
-#                        Inward Out 2                          #
+#                        Inside Out 2                          #
 ################################################################
 # Description:                                                 #
 # A variation of Inward Out. This program lights up the        #
