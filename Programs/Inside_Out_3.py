@@ -1,5 +1,5 @@
 ################################################################
-#                        Inward Out 3                          #
+#                        Inside Out 3                          #
 ################################################################
 # Description:                                                 #
 # A variation of Inward Out. This program lights up the        #
