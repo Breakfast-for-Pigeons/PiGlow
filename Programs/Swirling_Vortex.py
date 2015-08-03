@@ -1,5 +1,5 @@
 ################################################################
-#                            Zoom In                           #
+#                     Swiriling Vortex                         #
 ################################################################
 # Description:                                                 #
 # This program lights up the LEDs on one at at time then       #
