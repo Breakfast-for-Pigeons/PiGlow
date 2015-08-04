@@ -1,5 +1,5 @@
 ################################################################
-#                       Zoom Zoom Zoom                         #
+#                        Shooting Stars                        #
 ################################################################
 # Description:                                                 #
 # This program lights up the LEDs on arm 1 one at at time then #
@@ -23,7 +23,7 @@ pyglow.all(0)
 sleep_speed = 0.01
 
 # Functions
-def arm1_leds():
+def shooting_star_1():
     ''' Turn on Arm 1 LEDS and fade '''
     # Turn on A1L1
     pyglow.led(1,60)
@@ -127,9 +127,9 @@ def arm1_leds():
     pyglow.led(6,0)
     sleep(sleep_speed)
 
-    sleep(0.05)
+    sleep(1)
 
-def arm2_leds():
+def shooting_star_2():
     ''' Turn on Arm 2 LEDS and fade '''
     # Turn on A2L7
     pyglow.led(7,60)
@@ -233,9 +233,9 @@ def arm2_leds():
     pyglow.led(12,0)
     sleep(sleep_speed)
 
-    sleep(0.05)
+    sleep(1)
 
-def arm3_leds():
+def shooting_star_3():
     ''' Turn on Arm 3 LEDS and fade '''
     # Turn on A3L13
     pyglow.led(13,60)
@@ -339,10 +339,30 @@ def arm3_leds():
     pyglow.led(18,0)
     sleep(sleep_speed)
 
-    sleep(0.05)
+    sleep(1)
     
 while True:
-    arm1_leds()
-    arm2_leds()
-    arm3_leds()
-    sleep(1)
+    # 1, 2, and 3
+    shooting_star_1()
+    shooting_star_2()
+    shooting_star_3()
+    # 2, 3, 1
+    shooting_star_2()
+    shooting_star_3()
+    shooting_star_1()
+    # 3, 1, 2
+    shooting_star_3()
+    shooting_star_1()
+    shooting_star_2()
+    # 1, 3, 2
+    shooting_star_1()
+    shooting_star_3()
+    shooting_star_2()
+    # 3, 2, 1
+    shooting_star_3()
+    shooting_star_2()
+    shooting_star_1()
+    # 2, 1, 3
+    shooting_star_2()
+    shooting_star_1()
+    shooting_star_3()
