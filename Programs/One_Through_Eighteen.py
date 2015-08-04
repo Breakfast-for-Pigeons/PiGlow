@@ -60,5 +60,9 @@ def increase_speed():
         sleep(sleep_speed)
     run_continuously()
 
-# Start the program
-increase_speed()
+
+try:
+    # Start the program
+    increase_speed()
+except KeyboardInterrupt:
+    pyglow.all(0)
