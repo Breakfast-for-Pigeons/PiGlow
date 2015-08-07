@@ -31,7 +31,7 @@ snake_23_leds = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
 # Functions
 def exploding_snake_12():
-    explode_speed = 0.025
+    explode_speed = 0.020
     pulse_speed = 150
     while pulse_speed < 225:
         ''' Uncomment the following print statement for feedback '''
@@ -74,7 +74,7 @@ def exploding_snake_12():
     sleep(2)
 
 def exploding_snake_13():
-    explode_speed = 0.025
+    explode_speed = 0.020
     pulse_speed = 150
     while pulse_speed < 225:
         ''' Uncomment the following print statement for feedback '''
@@ -117,7 +117,7 @@ def exploding_snake_13():
     sleep(2)
     
 def exploding_snake_23():
-    explode_speed = 0.025
+    explode_speed = 0.020
     pulse_speed = 150
     while pulse_speed < 225:
         ''' Uncomment the following print statement for feedback '''
