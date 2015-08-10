@@ -7,7 +7,8 @@
 # up arms 1 and 3. Then lights up arm 3, which then lights     #
 # up arms 1 and 2.  Then goes through the whole thing again    #
 # while increasing the speed. Exactly like my "Light the Fuse" #
-# program, except that the fuse fades.                         #                                                                #                                                              #
+# program, except that the fuse fades.                         # 
+#                                                              #
 # Requirements: PyGlow.py                                      #
 #                                                              #
 # Author: Paul Ryan                                            #
