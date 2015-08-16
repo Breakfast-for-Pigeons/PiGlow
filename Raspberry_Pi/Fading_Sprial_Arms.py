@@ -758,7 +758,7 @@ def fading_spiral_arms():
     sleep(sleep_speed)
     pyglow.led(18, 10)
     sleep(sleep_speed)
-    # Fade LED 118
+    # Fade LED 18
     pyglow.led(18, 0)
     sleep(sleep_speed)
 
