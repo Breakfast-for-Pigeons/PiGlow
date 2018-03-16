@@ -8,4 +8,4 @@ Enjoy.
 
 [![Click to view the Swirling Vortex program](https://user-images.githubusercontent.com/13591438/37532617-6b52247e-2937-11e8-9d27-41549082a5db.JPG)](https://www.dropbox.com/s/qhf1xob3y65rx51/PiGlow.AVI?dl=0)
 
-The picture above is from the Jewels_in_the_Cave pogram. Click the picture to see a video of the Swirling_Vortex program.
+The PiGlow on a Raspberry Pi model B. It is running the Jewels_in_the_Cave pogram. Click the picture to see a video of the Swirling_Vortex program.
