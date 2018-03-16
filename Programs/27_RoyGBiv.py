@@ -4,7 +4,7 @@
 # Description:                                                 #
 # This program lights up like colors one at the same,          #
 # all red, all orange, etc... then gradually increases the     #
-# speed and then goes through the entire process again.        #                                        #
+# speed and then goes through the entire process again.        # 
 #                                                              #
 # Requirements: PyGlow.py                                      #
 #                                                              #
