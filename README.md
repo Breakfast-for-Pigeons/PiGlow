@@ -10,6 +10,6 @@ Enjoy.
 
 The PiGlow on a Raspberry Pi model B. It is running the Jewels_in_the_Cave pogram. Click the picture to see a video of the Swirling_Vortex program.
 
-![piglow_raspberrypi0w](https://user-images.githubusercontent.com/13591438/37556301-16c44d66-29c2-11e8-836f-78b8a7abae76.JPG)
+[![piglow_raspberrypi0w](https://user-images.githubusercontent.com/13591438/37556301-16c44d66-29c2-11e8-836f-78b8a7abae76.JPG)](https://www.dropbox.com/s/9ebpebg76f5ml73/PiGlow_RaspberryPi0W.AVI?dl=0)
 
 The PiGlow on a Raspberry Pi 0 W. 
