@@ -1,5 +1,5 @@
 # PiGlow
-These are the programs that I wrote for the PiGlow.
+These are the programs that I wrote for the PiGlow. There'e over 40 of them.
 These programs require benleb's Pyglow module (https://github.com/benleb/PyGlow) that I got by following the instructions on this github page: 
 https://github.com/raspberrypilearning/piglow. 
 Once you follow those setup instructions, you can run my programs. 
