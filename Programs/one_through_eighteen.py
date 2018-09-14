@@ -49,7 +49,7 @@ def main():
         increase_speed()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
-        PYGLOW.all()
+        PYGLOW.all(0)
 
 
 def run_10_times():
