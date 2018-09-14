@@ -2,21 +2,24 @@
 """
 One Through Eighteen
 
-Description:
 This program lights up LEDs 1 through 18 one at at time and
 gradually increases the speed.
 
+....................
+
 Functions:
 - run_10_times: Cycles throught the LEDs 10 times
-- increase_speed: Gradually increase the speed
+- increase_speed: Gradually increases the speed
+
+....................
 
 Requirements: PyGlow.py
 
+....................
 
 Author: Paul Ryan
 
-This
-
+This program was written on a Raspberry Pi using the Geany IDE.
 """
 ########################################################################
 #                          Import modules                              #
