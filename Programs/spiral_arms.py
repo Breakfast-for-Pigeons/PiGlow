@@ -56,11 +56,12 @@ def main():
     """
     The main function
     """
-
+    print("Press Ctrl-C to stop the program.")
     try:
         increase_speed()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
+        print("\nExiting program.")
         PYGLOW.all(0)
 
 
