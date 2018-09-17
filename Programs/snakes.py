@@ -7,7 +7,9 @@ I think the title is self explanatory.
 ....................
 
 Functions:
-- swirling_vortex: Lights up 1 color at a time, Fades colors
+- snake_12: Lights up the LEDs on arms 1 and 2
+- snake_13: Lights up the LEDs on arms 1 and 3
+- snake_23: Lights up the LEDs on arms 2 and 3
 
 ....................
 
