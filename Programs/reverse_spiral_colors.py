@@ -11,7 +11,7 @@ except counter clockwise.
 ....................
 
 Functions:
-- sprial_colors: Lights up 1 color at a time
+- reverse_sprial_colors: Lights up 1 color at a time
 - red_leds: Turns the red LEDs on and off one at a time
 - orange_leds: Turns the ornage LEDs on and off one at a time
 - yellow_leds: Turns the yellow LEDs on and off one at a time
