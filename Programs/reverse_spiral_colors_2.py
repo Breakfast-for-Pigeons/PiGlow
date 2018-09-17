@@ -8,7 +8,7 @@ Spiral Colors 2, but counter clockwise
 ....................
 
 Functions:
-- sprial_colors: Lights up 1 color at a time
+- reverse_sprial_colors: Lights up 1 color at a time
 - red_leds_on: Lights up the red LEDs one at a time
 - red_leds_off: Turns off the red LEDs one at a time
 - orange_leds_on: Lights up the orange LEDs one at a time
