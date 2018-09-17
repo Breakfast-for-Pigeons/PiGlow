@@ -11,7 +11,7 @@ the order of the LEDs reversed.
 ....................
 
 Functions:
-- sprial_colors: Lights up 1 color at a time
+- inside_out: Lights up 1 color at a time
 - red_leds: Lights up the red LEDs one at a time
 - orange_leds: Lights up the orange LEDs one at a time
 - yellow_leds: Lights up the yellow LEDs one at a time
