@@ -69,56 +69,32 @@ def main():
         while True:
             # Snakes 12, 13, 21, 23, 31, 32
             slithering_exploding_snake_12()
-            sleep(1)
             slithering_exploding_snake_13()
-            sleep(1)
             slithering_exploding_snake_21()
-            sleep(1)
             slithering_exploding_snake_23()
-            sleep(1)
             slithering_exploding_snake_31()
-            sleep(1)
             slithering_exploding_snake_32()
-            sleep(1)
             # Snakes 12, 23, 31, 13, 32, 21
             slithering_exploding_snake_12()
-            sleep(1)
             slithering_exploding_snake_23()
-            sleep(1)
             slithering_exploding_snake_31()
-            sleep(1)
             slithering_exploding_snake_13()
-            sleep(1)
             slithering_exploding_snake_32()
-            sleep(1)
             slithering_exploding_snake_21()
-            sleep(1)
             # Snakes 13, 12, 23, 21, 31, 32
             slithering_exploding_snake_13()
-            sleep(1)
             slithering_exploding_snake_12()
-            sleep(1)
             slithering_exploding_snake_23()
-            sleep(1)
             slithering_exploding_snake_21()
-            sleep(1)
             slithering_exploding_snake_31()
-            sleep(1)
             slithering_exploding_snake_32()
-            sleep(1)
             # Snakes 13, 32, 21, 12, 23, 31
             slithering_exploding_snake_13()
-            sleep(1)
             slithering_exploding_snake_32()
-            sleep(1)
             slithering_exploding_snake_21()
-            sleep(1)
             slithering_exploding_snake_12()
-            sleep(1)
             slithering_exploding_snake_23()
-            sleep(1)
             slithering_exploding_snake_31()
-            sleep(1)
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
         print("\nExiting program.")
@@ -161,6 +137,8 @@ def slithering_exploding_snake_12():
     # Uncomment the following line for testing/debugging
     # print("Snake 12 is exploding...")
     explode_snake_12_or_21()
+    # Pause before next snake
+    sleep(1)
 
 
 def slithering_exploding_snake_13():
@@ -199,6 +177,8 @@ def slithering_exploding_snake_13():
     # Uncomment the following line for testing/debugging
     # print("Snake 13 is exploding...")
     explode_snake_13_or_31()
+    # Pause before next snake
+    sleep(1)
 
 
 def slithering_exploding_snake_21():
@@ -237,6 +217,8 @@ def slithering_exploding_snake_21():
     # Uncomment the following line for testing/debugging
     # print("Snake 21 is exploding...")
     explode_snake_12_or_21()
+    # Pause before next snake
+    sleep(1)
 
 
 def slithering_exploding_snake_23():
@@ -275,6 +257,8 @@ def slithering_exploding_snake_23():
     # Uncomment the following line for testing/debugging
     # print("Snake 23 is exploding...")
     explode_snake_23_or_32()
+    # Pause before next snake
+    sleep(1)
 
 
 def slithering_exploding_snake_31():
@@ -313,6 +297,8 @@ def slithering_exploding_snake_31():
     # Uncomment the following line for testing/debugging
     # print("Snake 31 is exploding...")
     explode_snake_13_or_31()
+    # Pause before next snake
+    sleep(1)
 
 
 def slithering_exploding_snake_32():
@@ -351,6 +337,8 @@ def slithering_exploding_snake_32():
     # Uncomment the following line for testing/debugging
     # print("Snake 32 is slithering...")
     explode_snake_23_or_32()
+    # Pause before next snake
+    sleep(1)
 
 
 def pulse_snake_12_or_21():
