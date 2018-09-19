@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Metachronal_Millipedes
+Metachronal Millipedes
 
 I think the title is self explanatory. This program will run a
 random millipede at a slow speed, a random millipede  at a
