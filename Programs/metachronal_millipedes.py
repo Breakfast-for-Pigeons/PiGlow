@@ -51,12 +51,6 @@ SLEEP_SPEED = 0.10
 PYGLOW.all(0)
 
 ########################################################################
-#                            Lists                                     #
-########################################################################
-
-MILLIPEDE_RIPPLE_SPEEDS = [0.1, 0.075, 0.05, 0.025]
-
-########################################################################
 #                            Functions                                 #
 ########################################################################
 
@@ -65,19 +59,25 @@ def main():
     """
     The main function
     """
+    
+    millipede_ripple_speeds = [0.1, 0.075, 0.05, 0.025]
+    
+    millipedes = [millipede_12, millipede_13, millipede_21, millipede_23,
+                  millipede_31, millipede_32]
+    
     print("Press Ctrl-C to stop the program.")
     try:
         while True:
             # Random Slow millipede
-            random.choice(MILLIPEDES)(0.1)
+            random.choice(millipedes)(0.1)
             # Random Slow/Medium millipede
-            random.choice(MILLIPEDES)(0.075)
+            random.choice(millipedes)(0.075)
             # Random Medium millipede
-            random.choice(MILLIPEDES)(0.05)
+            random.choice(millipedes)(0.05)
             # Random Fast millipede
-            random.choice(MILLIPEDES)(0.025)
+            random.choice(millipedes)(0.025)
             # Random millipede, Random Speed
-            random.choice(MILLIPEDES)(random.choice(MILLIPEDE_RIPPLE_SPEEDS))
+            random.choice(millipedes)(random.choice(millipede_ripple_speeds))
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
         print("\nExiting program.")
@@ -88,12 +88,12 @@ def millipede_12(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 1 and 2
     """
-
-    ripple_speed = ripple_speed
-
     # Uncomment the following print lines for testing/debugging
     # print("millipede 12")
     # print("millipede speed is: ", ripple_speed)
+
+    ripple_speed = ripple_speed
+
     # millipede 12 Head
     PYGLOW.led(1, 120)
     sleep(SLEEP_SPEED)
@@ -762,12 +762,12 @@ def millipede_13(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 1 and 3
     """
-
-    ripple_speed = ripple_speed
-
     # Uncomment the following print lines for testing/debugging
     # print("millipede 13")
     # print("millipede speed is: ", ripple_speed)
+
+    ripple_speed = ripple_speed
+
     # Turn on millipede 13
     # Turn on Head
     PYGLOW.led(1, 120)
@@ -1437,12 +1437,12 @@ def millipede_21(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 2 and 1
     """
-
-    ripple_speed = ripple_speed
-
     # Uncomment the following print lines for testing/debugging
     # print("millipede 21")
     # print("millipede speed is: ", ripple_speed)
+
+    ripple_speed = ripple_speed
+
     # Turn on millipede 21
     # Turn on Head
     PYGLOW.led(7, 120)
@@ -2120,12 +2120,12 @@ def millipede_23(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 2 and 3
     """
-
-    ripple_speed = ripple_speed
-
     # Uncomment the following print lines for testing/debugging
     # print("millipede 23")
     # print("millipede speed is: ", ripple_speed)
+
+    ripple_speed = ripple_speed
+
     # Light up millipede 23
     # Turn on Head
     PYGLOW.led(7, 120)
@@ -2807,12 +2807,12 @@ def millipede_31(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 3 and 1
     """
-
-    ripple_speed = ripple_speed
-
     # Uncomment the following print lines for testing/debugging
     # print("millipede 31")
     # print("millipede speed is: ", ripple_speed)
+
+    ripple_speed = ripple_speed
+
     # Light up millipede 31
     # Turn on Head
     PYGLOW.led(13, 120)
@@ -3494,12 +3494,12 @@ def millipede_32(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 3 and 2
     """
-
-    ripple_speed = ripple_speed
-
     # Uncomment the following print lines for testing/debugging
     # print("millipede 32")
     # print("millipede speed is: ", ripple_speed)
+
+    ripple_speed = ripple_speed
+
     # Light up millipede 32
     # Turn on Head
     PYGLOW.led(13, 120)
@@ -4175,10 +4175,6 @@ def millipede_32(ripple_speed):
     sleep(SLEEP_SPEED)
 
     sleep(1)
-
-
-MILLIPEDES = [millipede_12, millipede_13, millipede_21, millipede_23,
-              millipede_31, millipede_32]
 
 
 if __name__ == '__main__':
