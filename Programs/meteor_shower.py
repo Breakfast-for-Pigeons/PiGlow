@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Shooting Stars
+Meteor Shower
 
 This program lights up the LEDs on arm 1 one at at time then
 then fades them. Then arm 2. Then arm 3. The code is the
@@ -32,7 +32,6 @@ This program was written on a Raspberry Pi using the Geany IDE.
 
 from time import sleep
 from PyGlow import PyGlow
-
 
 ########################################################################
 #                           Variables                                  #
@@ -190,7 +189,7 @@ def shooting_star_1():
     # Fade A1L6)
     PYGLOW.led(6, 0)
     sleep(SLEEP_SPEED)
-
+    # Pause before next shooting star
     sleep(0.25)
 
 
@@ -297,7 +296,7 @@ def shooting_star_2():
     # Fade A2L12
     PYGLOW.led(12, 0)
     sleep(SLEEP_SPEED)
-
+    # Pause before next shooting star
     sleep(0.25)
 
 
@@ -404,7 +403,7 @@ def shooting_star_3():
     # Fade A3L18
     PYGLOW.led(18, 0)
     sleep(SLEEP_SPEED)
-
+    # Pause before next shooting star
     sleep(0.25)
 
 
