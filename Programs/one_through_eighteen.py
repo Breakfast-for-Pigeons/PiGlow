@@ -78,7 +78,7 @@ def increase_speed():
 def run_10_times():
     """ Run 10 times
 
-    Once the program was reached the max set speed, it will cycle
+    Once the program has reached the max set speed, it will cycle
     throught the LEDs 10 times.
 
     """
