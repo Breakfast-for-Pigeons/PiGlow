@@ -8,12 +8,17 @@ gradually increases the speed.
 ....................
 
 Functions:
+
+- one_through_eighteen: Lights up LEDs one at a time
 - run_10_times: Cycles throught the LEDs 10 times
-- increase_speed: Gradually increases the speed
+- stop: Print exit message and turn off the PiGlow
 
 ....................
 
-Requirements: PyGlow.py
+Requirements:
+    PyGlow.py
+    print_pyglow_header.py
+(You will have these files if you downloaded the entire repository)
 
 ....................
 
@@ -25,8 +30,10 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import logging
 from time import sleep
 from PyGlow import PyGlow
+from print_piglow_header import print_piglow_header
 
 ########################################################################
 #                           Initialize                                 #
@@ -34,6 +41,17 @@ from PyGlow import PyGlow
 
 PYGLOW = PyGlow()
 PYGLOW.all(0)
+
+# Logging
+LOG = 'one_through_eighteen.log'
+LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                               datefmt='%m/%d/%y %I:%M:%S %p:')
+FILE_HANDLER = logging.FileHandler(LOG, 'w')
+FILE_HANDLER.setFormatter(FORMATTER)
+LOGGER.addHandler(FILE_HANDLER)
 
 ########################################################################
 #                            Functions                                 #
@@ -44,26 +62,34 @@ def main():
     """
     The main function
     """
-    print("Press Ctrl-C to stop the program.")
+
+    LOGGER.debug("START")
+
+    print_piglow_header()
+    print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
-        increase_speed()
-    # Stop the program and turn off LEDs with Ctrl-C
+        one_through_eighteen()
+        run_10_times()
+        stop()
     except KeyboardInterrupt:
-        print("\nExiting program.")
-        PYGLOW.all(0)
+        stop()
 
 
-def increase_speed():
+def one_through_eighteen():
     """
+    Lights up and turns off LEDs 1 through 18 one at a time.
     Gradually increases the speed at which the LEDs light up
     """
-    # Uncomment the following line for testing/debugging
-    # print("Increasing speed...")
+
+    LOGGER.debug("Increasing speed...")
+
     led_number = 1
     sleep_speed = 0.25
+
     while sleep_speed > 0.05:
-        # Uncomment the following line for testing/debugging
-        # print("The speed is now: ", sleep_speed)
+
+        LOGGER.debug("The speed is now %s", sleep_speed)
+
         while led_number < 19:
             PYGLOW.led(led_number, 100)    # light up LED
             sleep(sleep_speed)
@@ -72,7 +98,6 @@ def increase_speed():
             led_number += 1
         led_number = 1                     # Reset LED number to 1
         sleep_speed -= 0.05                # Increase speed
-    run_10_times()
 
 
 def run_10_times():
@@ -82,14 +107,17 @@ def run_10_times():
     throught the LEDs 10 times.
 
     """
-    # Uncomment the following line for testing/debugging
-    # print("Running 10 times...")
+
+    LOGGER.debug("Running 10 times...")
+
     counter = 10
+
     while counter > 0:
         # Set (or Reset) led_number to 1
         led_number = 1
-        # Uncomment the following line for testing/debugging
-        # print("counter = ", counter)
+
+        LOGGER.debug("This is run number %s", counter)
+
         while led_number < 19:
             PYGLOW.led(led_number, 100)    # light up LED
             sleep(0.05)
@@ -97,7 +125,15 @@ def run_10_times():
             sleep(0.05)
             led_number += 1                # increment LED number
         counter -= 1                       # decrease counter
-    increase_speed()
+
+
+def stop():
+    """
+    Print exit message and turn off the PiGlow
+    """
+    LOGGER.debug("END")
+    print("\nExiting program.")
+    PYGLOW.all(0)
 
 
 if __name__ == '__main__':
