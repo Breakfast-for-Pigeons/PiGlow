@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Print
+Print PiGlow Header
 
 This is the print_piglow_header module for my PiGlow programs.
 
@@ -19,7 +19,7 @@ This program was written on a Raspberry Pi using the Geany IDE.
 import logging
 
 # Logging
-LOG = 'print_piglow_header.log'
+LOG = 'Logs/print_piglow_header.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)    # Nothing will log unless changed to DEBUG
