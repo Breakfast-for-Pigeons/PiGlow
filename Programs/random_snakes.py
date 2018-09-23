@@ -1,0 +1,4328 @@
+#!/usr/bin/python3
+"""
+Snakes Alive!
+
+This program chooses a random snake function.
+
+....................
+
+Functions:
+- snake_12: Lights up the LEDs on arms 1 and 2
+- snake_13: Lights up the LEDs on arms 1 and 3
+- snake_23: Lights up the LEDs on arms 2 and 3
+- fading_snake_12: Lights up the LEDs on arms 1 and 2 and fades them
+- fading_snake_13: Lights up the LEDs on arms 1 and 3 and fades them
+- fading_snake_23: Lights up the LEDs on arms 2 and 3 and fades them
+- slithering_snake_12: Lights up then turns off the LEDs on arms 1 and 2
+- slithering_snake_13: Lights up then turns off the LEDs on arms 1 and 3
+- slithering_snake_21: Lights up then turns off the LEDs on arms 2 and 1
+- slithering_snake_23: Lights up then turns off the LEDs on arms 2 and 3
+- slithering_snake_31: Lights up then turns off the LEDs on arms 3 and 1
+- slithering_snake_32: Lights up then turns off the LEDs on arms 3 and 2
+- slithering_fading_snake_12: Lights up then fades the LEDs on arms 1 and 2
+- slithering_fading_snake_13: Lights up then fades the LEDs on arms 1 and 3
+- slithering_fading_snake_21: Lights up then fades the LEDs on arms 2 and 1
+- slithering_fading_snake_23: Lights up then fades the LEDs on arms 2 and 3
+- slithering_fading_snake_31: Lights up then turns off the LEDs on arms 3 and 1
+- slithering_fading_snake_32: Lights up then turns off the LEDs on arms 3 and 2
+- pulsing_snake_12: Lights up and pulses the LEDs on arms 1 and 2
+- pulsing_snake_13: Lights up and pulses the LEDs on arms 1 and 3
+- pulsing_snake_23: Lights up and pulses the LEDs on arms 2 and 3
+- explode_snake_12_or_21: Lights up and turns off the LEDs on arms 1 and 2
+- explode_snake_13_or_31: Lights up and turns off the LEDs on arms 1 and 3
+- explode_snake_23_or_32: Lights up and turns off the LEDs on arms 2 and 3
+- slithering_fizzling_fading_snake_12: Lights up the LEDs on arms 1 and 2
+- slithering_fizzling_fading_snake_13: Lights up the LEDs on arms 1 and 3
+- slithering_fizzling_fading_snake_21: Lights up the LEDs on arms 2 and 1
+- slithering_fizzling_fading_snake_23: Lights up the LEDs on arms 2 and 3
+- slithering_fizzling_fading_snake_31: Lights up the LEDs on arms 3 and 1
+- slithering_fizzling_fading_snake_32: Lights up the LEDs on arms 3 and 2
+- fizzling_snake_12_or_21: Fades the LEDs on arms 1 and 2
+- fizzling_snake_13_or_31: Fades the LEDs on arms 1 and 3
+- fizzling_snake_23_or_32: Fades the LEDs on arms 2 and 3
+
+....................
+
+Requirements: PyGlow.py
+
+....................
+
+Author: Paul Ryan
+
+This program was written on a Raspberry Pi using the Geany IDE.
+"""
+########################################################################
+#                          Import modules                              #
+########################################################################
+
+from time import sleep
+import random
+from PyGlow import PyGlow
+
+########################################################################
+#                           Initialize                                 #
+########################################################################
+
+PYGLOW = PyGlow()
+PYGLOW.all(0)
+
+########################################################################
+#                            Lists                                     #
+########################################################################
+
+# Snake 12 LEDs
+SNAKE_12_LEDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18]
+# Snake 13 LEDs
+SNAKE_13_LEDS = [1, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17, 18]
+# Snake 23 LEDs
+SNAKE_23_LEDS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+
+########################################################################
+#                            Functions                                 #
+########################################################################
+
+
+def main():
+    """
+    The main function
+    """
+
+    snake_functions = [snake_12, snake_13, snake_23, fading_snake_12,
+                       fading_snake_13, fading_snake_23, slithering_snake_12,
+                       slithering_snake_13, slithering_snake_21,
+                       slithering_snake_23, slithering_snake_31,
+                       slithering_snake_32, slithering_fading_snake_12,
+                       slithering_fading_snake_13, slithering_fading_snake_21,
+                       slithering_fading_snake_23, slithering_fading_snake_31,
+                       slithering_fading_snake_32, pulsing_snake_12,
+                       pulsing_snake_13, pulsing_snake_23, exploding_snake_12,
+                       exploding_snake_13, exploding_snake_23,
+                       slithering_exploding_snake_12,
+                       slithering_exploding_snake_13,
+                       slithering_exploding_snake_21,
+                       slithering_exploding_snake_23,
+                       slithering_exploding_snake_31,
+                       slithering_exploding_snake_32,
+                       slithering_fizzling_fading_snake_12,
+                       slithering_fizzling_fading_snake_13,
+                       slithering_fizzling_fading_snake_21,
+                       slithering_fizzling_fading_snake_23,
+                       slithering_fizzling_fading_snake_31,
+                       slithering_fizzling_fading_snake_32]
+
+    print("Press Ctrl-C to stop the program.")
+    try:
+        while True:
+            random.choice(snake_functions)()
+            sleep(2)
+    # Stop the program and turn off LEDs with Ctrl-C
+    except KeyboardInterrupt:
+        print("\nExiting program.")
+        PYGLOW.all(0)
+
+
+def snake_12():
+    """
+    Lights up the LEDs on arms 1 and 2
+    """
+
+    PYGLOW.set_leds(SNAKE_12_LEDS, 100)
+    sleep(2)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 0)
+
+
+def snake_13():
+    """
+    Lights up the LEDs on arms 1 and 3
+    """
+
+    PYGLOW.set_leds(SNAKE_13_LEDS, 100)
+    sleep(2)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 0)
+
+
+def snake_23():
+    """
+    Lights up the LEDs on arms 2 and 3
+    """
+
+    PYGLOW.set_leds(SNAKE_23_LEDS, 100)
+    sleep(2)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 0)
+
+
+def fading_snake_12():
+    """
+    Lights up the LEDs on arms 1 and 2 and fades them
+    """
+
+    PYGLOW.set_leds(SNAKE_12_LEDS, 100)
+    sleep(2)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 90)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 80)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 70)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 60)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 50)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 40)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 30)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 20)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 10)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_12_LEDS, 0)
+
+
+def fading_snake_13():
+    """
+    Lights up the LEDs on arms 1 and 3 and fades them
+    """
+    PYGLOW.set_leds(SNAKE_13_LEDS, 100)
+    sleep(2)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 90)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 80)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 70)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 60)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 50)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 40)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 30)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 20)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 10)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_13_LEDS, 0)
+
+
+def fading_snake_23():
+    """
+    Lights up the LEDs on arms 2 and 3 and fades them
+    """
+
+    PYGLOW.set_leds(SNAKE_23_LEDS, 100)
+    sleep(2)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 90)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 80)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 70)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 60)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 50)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 40)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 30)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 20)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 10)
+    sleep(0.1)
+    PYGLOW.set_leds(SNAKE_23_LEDS, 0)
+
+
+def slithering_snake_12():
+    """
+    Lights up then turns off the LEDs on arms 1 and 2
+    """
+    # Set sleep speed
+    sleep_speed = 0.10
+    # Light up Snake 12
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Turn off Snake 12
+    PYGLOW.led(1, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 0)
+
+
+def slithering_snake_13():
+    """
+    Lights up then turns off the LEDs on arms 1 and 3
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.10
+    # Light up Snake 13
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Turn off Snake 13
+    PYGLOW.led(1, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 0)
+
+
+def slithering_snake_21():
+    """
+    Lights up then turns off the LEDs on arms 2 and 1
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.10
+    # Light up Snake 21
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Turn off Snake 21
+    PYGLOW.led(7, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 0)
+
+
+def slithering_snake_23():
+    """
+    Lights up then turns off the LEDs on arms 2 and 3
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.10
+    # Light up Snake 23
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Turn off Snake 23
+    PYGLOW.led(7, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 0)
+
+
+def slithering_snake_31():
+    """
+    Lights up then turns off the LEDs on arms 3 and 1
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.10
+    # Light up Snake 31
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Turn off Snake 31
+    PYGLOW.led(13, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 0)
+
+
+def slithering_snake_32():
+    """
+    Lights up then turns off the LEDs on arms 3 and 2
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.10
+    # Light up Snake 32
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Turn off Snake 32
+    PYGLOW.led(13, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 0)
+
+
+def slithering_fading_snake_12():
+    """
+    Lights up then fades the LEDs on arms 1 and 2
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.01
+    # Turn on Snake Head
+    PYGLOW.led(1, 120)
+    sleep(sleep_speed)
+    # Turn on Snake Body 1
+    PYGLOW.led(2, 120)
+    sleep(sleep_speed)
+    # Fade Head
+    PYGLOW.led(1, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 2
+    PYGLOW.led(3, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 3
+    PYGLOW.led(4, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 2
+    PYGLOW.led(1, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 4
+    PYGLOW.led(5, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 3
+    PYGLOW.led(1, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 5
+    PYGLOW.led(6, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 4
+    PYGLOW.led(1, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 6
+    PYGLOW.led(18, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 5
+    PYGLOW.led(1, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 7
+    PYGLOW.led(11, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 6
+    PYGLOW.led(1, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 8
+    PYGLOW.led(10, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 7
+    PYGLOW.led(1, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 9
+    PYGLOW.led(9, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 8
+    PYGLOW.led(1, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 10
+    PYGLOW.led(8, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 9
+    PYGLOW.led(1, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Tail
+    PYGLOW.led(7, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 10
+    PYGLOW.led(1, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 110)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10, and Tail
+    PYGLOW.led(1, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 110)
+    sleep(sleep_speed)
+    # Fade Body 1 - 10 and Tail
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Fade Body 2 - 10 and Tail
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 90)
+    sleep(sleep_speed)
+    # Fade Body 3 - 10 and Tail
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 80)
+    sleep(sleep_speed)
+    # Fade Body 4 - 10 and Tail
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 70)
+    sleep(sleep_speed)
+    # Fade Body 5 - 10 and Tail
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 60)
+    sleep(sleep_speed)
+    # Fade Body 6 - 10 and Tail
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 50)
+    sleep(sleep_speed)
+    # Fade Body 7 - 10 and Tail
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 40)
+    sleep(sleep_speed)
+    # Fade Body 8 - 10 and Tail
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 30)
+    sleep(sleep_speed)
+    # Fade Body 9 - 10 and Tail
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 20)
+    sleep(sleep_speed)
+    # Fade Body 10 and Tail
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 10)
+    sleep(sleep_speed)
+    # Fade Tail
+    PYGLOW.led(7, 0)
+    sleep(sleep_speed)
+
+
+def slithering_fading_snake_13():
+    """
+    Lights up then fades the LEDs on arms 1 and 3
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.01
+    # Turn on Snake Head
+    PYGLOW.led(1, 120)
+    sleep(sleep_speed)
+    # Turn on Snake Body 1
+    PYGLOW.led(2, 120)
+    sleep(sleep_speed)
+    # Fade Head
+    PYGLOW.led(1, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 2
+    PYGLOW.led(3, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 3
+    PYGLOW.led(4, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 2
+    PYGLOW.led(1, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 4
+    PYGLOW.led(5, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 3
+    PYGLOW.led(1, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 5
+    PYGLOW.led(12, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 4
+    PYGLOW.led(1, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 6
+    PYGLOW.led(18, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 5
+    PYGLOW.led(1, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 7
+    PYGLOW.led(17, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 6
+    PYGLOW.led(1, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 8
+    PYGLOW.led(16, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 7
+    PYGLOW.led(1, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 9
+    PYGLOW.led(15, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 8
+    PYGLOW.led(1, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 10
+    PYGLOW.led(14, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 9
+    PYGLOW.led(1, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Tail
+    PYGLOW.led(13, 120)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10
+    PYGLOW.led(1, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 110)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10, Tail
+    PYGLOW.led(1, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 110)
+    sleep(sleep_speed)
+    # Fade Body 1 - 10, Tail
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Fade Body 2 - 10, Tail
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 90)
+    sleep(sleep_speed)
+    # Fade Body 3 - 10, Tail
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 80)
+    sleep(sleep_speed)
+    # Fade Body 4 - 10, Tail
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 70)
+    sleep(sleep_speed)
+    # Fade Body 5 - 10, Tail
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 60)
+    sleep(sleep_speed)
+    # Fade Body 6 - 10, Tail
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 50)
+    sleep(sleep_speed)
+    # Fade Body 7 - 10, Tail
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 40)
+    sleep(sleep_speed)
+    # Fade Body 8 - 10, Tail
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 30)
+    sleep(sleep_speed)
+    # Fade Body 9 - 10, Tail
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 20)
+    sleep(sleep_speed)
+    # Fade Body 10 and  Tail
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 10)
+    sleep(sleep_speed)
+    # Fade Tail
+    PYGLOW.led(13, 0)
+    sleep(sleep_speed)
+
+
+def slithering_fading_snake_21():
+    """
+    Lights up then fades the LEDs on arms 2 and 1
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.01
+    # Turn on Snake Head
+    PYGLOW.led(7, 120)
+    sleep(sleep_speed)
+    # Turn on Snake Body 1
+    PYGLOW.led(8, 120)
+    sleep(sleep_speed)
+    # Fade Head
+    PYGLOW.led(7, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 2
+    PYGLOW.led(9, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 3
+    PYGLOW.led(10, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 2
+    PYGLOW.led(7, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 4
+    PYGLOW.led(11, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 3
+    PYGLOW.led(7, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 5
+    PYGLOW.led(18, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 4
+    PYGLOW.led(7, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 6
+    PYGLOW.led(6, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 5
+    PYGLOW.led(7, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 7
+    PYGLOW.led(5, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 6
+    PYGLOW.led(7, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 8
+    PYGLOW.led(4, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 7
+    PYGLOW.led(7, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 9
+    PYGLOW.led(3, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 8
+    PYGLOW.led(7, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 10
+    PYGLOW.led(2, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 9
+    PYGLOW.led(7, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Tail
+    PYGLOW.led(1, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 10
+    PYGLOW.led(7, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 110)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10, and Tail
+    PYGLOW.led(7, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 110)
+    sleep(sleep_speed)
+    # Fade Body 1 - 10 and Tail
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Fade Body 2 - 10 and Tail
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 90)
+    sleep(sleep_speed)
+    # Fade Body 3 - 10 and Tail
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 80)
+    sleep(sleep_speed)
+    # Fade Body 4 - 10 and Tail
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 70)
+    sleep(sleep_speed)
+    # Fade Body 5 - 10 and Tail
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 60)
+    sleep(sleep_speed)
+    # Fade Body 6 - 10 and Tail
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 50)
+    sleep(sleep_speed)
+    # Fade Body 7 - 10 and Tail
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 40)
+    sleep(sleep_speed)
+    # Fade Body 8 - 10 and Tail
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 30)
+    sleep(sleep_speed)
+    # Fade Body 9 - 10 and Tail
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 20)
+    sleep(sleep_speed)
+    # Fade Body 10 and Tail
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 10)
+    sleep(sleep_speed)
+    # Fade Tail
+    PYGLOW.led(1, 0)
+    sleep(sleep_speed)
+
+
+def slithering_fading_snake_23():
+    """
+    Lights up then fades the LEDs on arms 2 and 3
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.01
+    # Turn on Snake Head
+    PYGLOW.led(7, 120)
+    sleep(sleep_speed)
+    # Turn on Snake Body 1
+    PYGLOW.led(8, 120)
+    sleep(sleep_speed)
+    # Fade Head
+    PYGLOW.led(7, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 2
+    PYGLOW.led(9, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 3
+    PYGLOW.led(10, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 2
+    PYGLOW.led(7, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 4
+    PYGLOW.led(11, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 3
+    PYGLOW.led(7, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 5
+    PYGLOW.led(12, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 4
+    PYGLOW.led(7, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 6
+    PYGLOW.led(6, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 5
+    PYGLOW.led(7, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 7
+    PYGLOW.led(17, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 6
+    PYGLOW.led(7, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 8
+    PYGLOW.led(16, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 7
+    PYGLOW.led(7, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 9
+    PYGLOW.led(15, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 8
+    PYGLOW.led(7, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 10
+    PYGLOW.led(14, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 9
+    PYGLOW.led(7, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Tail
+    PYGLOW.led(13, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 10
+    PYGLOW.led(7, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 110)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10, and Tail
+    PYGLOW.led(7, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 110)
+    sleep(sleep_speed)
+    # Fade Body 1 - 10 and Tail
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Fade Body 2 - 10 and Tail
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 90)
+    sleep(sleep_speed)
+    # Fade Body 3 - 10 and Tail
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 80)
+    sleep(sleep_speed)
+    # Fade Body 4 - 10 and Tail
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 70)
+    sleep(sleep_speed)
+    # Fade Body 5 - 10 and Tail
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 60)
+    sleep(sleep_speed)
+    # Fade Body 6 - 10 and Tail
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 50)
+    sleep(sleep_speed)
+    # Fade Body 7 - 10 and Tail
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 40)
+    sleep(sleep_speed)
+    # Fade Body 8 - 10 and Tail
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 30)
+    sleep(sleep_speed)
+    # Fade Body 9 - 10 and Tail
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 20)
+    sleep(sleep_speed)
+    # Fade Body 10 and Tail
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 10)
+    sleep(sleep_speed)
+    # Fade Tail
+    PYGLOW.led(13, 0)
+    sleep(sleep_speed)
+
+
+def slithering_fading_snake_31():
+    """
+    Lights up then fades the LEDs on arms 3 and 1
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.01
+    # Turn on Snake Head
+    PYGLOW.led(13, 120)
+    sleep(sleep_speed)
+    # Turn on Snake Body 1
+    PYGLOW.led(14, 120)
+    sleep(sleep_speed)
+    # Fade Head
+    PYGLOW.led(13, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 2
+    PYGLOW.led(15, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 3
+    PYGLOW.led(16, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 2
+    PYGLOW.led(13, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 4
+    PYGLOW.led(17, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 3
+    PYGLOW.led(13, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 5
+    PYGLOW.led(18, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 4
+    PYGLOW.led(13, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 6
+    PYGLOW.led(12, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 5
+    PYGLOW.led(13, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 7
+    PYGLOW.led(5, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 6
+    PYGLOW.led(13, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 8
+    PYGLOW.led(4, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 7
+    PYGLOW.led(13, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 9
+    PYGLOW.led(3, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 8
+    PYGLOW.led(13, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Body 10
+    PYGLOW.led(2, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 9
+    PYGLOW.led(13, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 110)
+    sleep(sleep_speed)
+    # Turn on Snake Tail
+    PYGLOW.led(1, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 10
+    PYGLOW.led(13, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 110)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10, and Tail
+    PYGLOW.led(13, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 110)
+    sleep(sleep_speed)
+    # Fade Body 1 - 10 and Tail
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Fade Body 2 - 10 and Tail
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 90)
+    sleep(sleep_speed)
+    # Fade Body 3 - 10 and Tail
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 80)
+    sleep(sleep_speed)
+    # Fade Body 4 - 10 and Tail
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 70)
+    sleep(sleep_speed)
+    # Fade Body 5 - 10 and Tail
+    PYGLOW.led(18, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 60)
+    sleep(sleep_speed)
+    # Fade Body 6 - 10 and Tail
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 50)
+    sleep(sleep_speed)
+    # Fade Body 7 - 10 and Tail
+    PYGLOW.led(5, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 40)
+    sleep(sleep_speed)
+    # Fade Body 8 - 10 and Tail
+    PYGLOW.led(4, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 30)
+    sleep(sleep_speed)
+    # Fade Body 9 - 10 and Tail
+    PYGLOW.led(3, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 20)
+    sleep(sleep_speed)
+    # Fade Body 10 and Tail
+    PYGLOW.led(2, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 10)
+    sleep(sleep_speed)
+    # Fade Tail
+    PYGLOW.led(1, 0)
+    sleep(sleep_speed)
+
+
+def slithering_fading_snake_32():
+    """
+    Lights up then fades the LEDs on arms 3 and 2
+    """
+
+    # Set sleep speed
+    sleep_speed = 0.01
+    # Turn on Snake Head
+    PYGLOW.led(13, 120)
+    sleep(sleep_speed)
+    # Turn on Body 1
+    PYGLOW.led(14, 120)
+    sleep(sleep_speed)
+    # Fade Head
+    PYGLOW.led(13, 110)
+    sleep(sleep_speed)
+    # Turn on Body 2
+    PYGLOW.led(15, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 110)
+    sleep(sleep_speed)
+    # Turn on Body 3
+    PYGLOW.led(16, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 2
+    PYGLOW.led(13, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 110)
+    sleep(sleep_speed)
+    # Turn on Body 4
+    PYGLOW.led(17, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 3
+    PYGLOW.led(13, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 110)
+    sleep(sleep_speed)
+    # Turn on Body 5
+    PYGLOW.led(6, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 4
+    PYGLOW.led(13, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 110)
+    sleep(sleep_speed)
+    # Turn on Body 6
+    PYGLOW.led(12, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 5
+    PYGLOW.led(13, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 110)
+    sleep(sleep_speed)
+    # Turn on Body 7
+    PYGLOW.led(11, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 6
+    PYGLOW.led(13, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 110)
+    sleep(sleep_speed)
+    # Turn on Body 8
+    PYGLOW.led(10, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 7
+    PYGLOW.led(13, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 110)
+    sleep(sleep_speed)
+    # Turn on Body 9
+    PYGLOW.led(9, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 8
+    PYGLOW.led(13, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 110)
+    sleep(sleep_speed)
+    # Turn on Body 10
+    PYGLOW.led(8, 120)
+    sleep(sleep_speed)
+    # Fade Head and Body 1 - 9
+    PYGLOW.led(13, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 110)
+    sleep(sleep_speed)
+    # Turn on Tail
+    PYGLOW.led(7, 120)
+    sleep(sleep_speed)
+    # Fade Head  and Body 1 - 10
+    PYGLOW.led(13, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 110)
+    sleep(sleep_speed)
+    # Fade Head, Body 1 - 10, and Tail
+    PYGLOW.led(13, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 110)
+    sleep(sleep_speed)
+    # Fade Body 1 - 10 and Tail
+    PYGLOW.led(14, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 90)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Fade Body 2 - 10 and Tail
+    PYGLOW.led(15, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 80)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 90)
+    sleep(sleep_speed)
+    # Fade Body 3 - 10 and Tail)
+    PYGLOW.led(16, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 70)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 80)
+    sleep(sleep_speed)
+    # Fade Body 4 - 10 and Tail)
+    PYGLOW.led(17, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 60)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 70)
+    sleep(sleep_speed)
+    # Fade Body 5 - 10 and Tail)
+    PYGLOW.led(6, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 50)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 60)
+    sleep(sleep_speed)
+    # Fade Body 6 - 10 and Tail
+    PYGLOW.led(12, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 40)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 50)
+    sleep(sleep_speed)
+    # Fade Body 7 - 10 and Tail
+    PYGLOW.led(11, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 30)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 40)
+    sleep(sleep_speed)
+    # Fade Body 8 - 10 and Tail
+    PYGLOW.led(10, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 20)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 30)
+    sleep(sleep_speed)
+    # Fade Body 9 - 10 and Tail
+    PYGLOW.led(9, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 10)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 20)
+    sleep(sleep_speed)
+    # Fade Body 10 and Tail
+    PYGLOW.led(8, 0)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 10)
+    sleep(sleep_speed)
+    # Fade Tail
+    PYGLOW.led(7, 0)
+    sleep(sleep_speed)
+
+
+def pulsing_snake_12():
+    """
+    Lights up and pulses the LEDs on arms 1 and 2
+    """
+
+    pulse_speed = 125
+
+    while pulse_speed > 100:
+        # Uncomment the following line for testing/debugging
+        # print("Pulse speed is: ", pulse_speed)
+        PYGLOW.set_leds(SNAKE_12_LEDS, 100, speed=pulse_speed, pulse=True)
+        sleep(0)
+        pulse_speed -= 1
+    PYGLOW.set_leds(SNAKE_12_LEDS, 0)
+    sleep(1)
+
+
+def pulsing_snake_13():
+    """
+    Lights up and pulses the LEDs on arms 1 and 3
+    """
+
+    pulse_speed = 125
+
+    while pulse_speed > 100:
+        # Uncomment the following line for testing/debugging
+        # print("Pulse speed is: ", pulse_speed)
+        PYGLOW.set_leds(SNAKE_13_LEDS, 100, speed=pulse_speed, pulse=True)
+        sleep(0)
+        pulse_speed -= 1
+    PYGLOW.set_leds(SNAKE_13_LEDS, 0)
+    sleep(1)
+
+
+def pulsing_snake_23():
+    """
+    Lights up and pulses the LEDs on arms 2 and 3
+    """
+
+    pulse_speed = 125
+
+    while pulse_speed > 100:
+        # Uncomment the following line for testing/debugging
+        # print("Pulse speed is: ", pulse_speed)
+        PYGLOW.set_leds(SNAKE_23_LEDS, 100, speed=pulse_speed, pulse=True)
+        sleep(0)
+        pulse_speed -= 1
+    PYGLOW.set_leds(SNAKE_23_LEDS, 0)
+    sleep(1)
+
+
+def exploding_snake_12():
+    """
+    Turns off the LEDs on arms 1 and 2
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Exploding Snake 12...")
+
+    explode_speed = 0.020
+
+    # Pulse
+    pulse_snake_12_or_21()
+
+    # Explode Snake 12
+    PYGLOW.led(6, 0)
+    sleep(explode_speed)
+    PYGLOW.led(18, 0)
+    sleep(explode_speed)
+    PYGLOW.led(11, 0)
+    sleep(explode_speed)
+    PYGLOW.led(5, 0)
+    sleep(explode_speed)
+    PYGLOW.led(10, 0)
+    sleep(explode_speed)
+    PYGLOW.led(4, 0)
+    sleep(explode_speed)
+    PYGLOW.led(9, 0)
+    sleep(explode_speed)
+    PYGLOW.led(3, 0)
+    sleep(explode_speed)
+    PYGLOW.led(8, 0)
+    sleep(explode_speed)
+    PYGLOW.led(2, 0)
+    sleep(explode_speed)
+    PYGLOW.led(7, 0)
+    sleep(explode_speed)
+    PYGLOW.led(1, 0)
+    sleep(explode_speed)
+
+
+def exploding_snake_13():
+    """
+    Turns off the LEDs on arms 1 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Exploding Snake 13...")
+
+    explode_speed = 0.020
+
+    # Pulse
+    pulse_snake_13_or_31()
+
+    # Explode Snake 13
+    PYGLOW.led(18, 0)
+    sleep(explode_speed)
+    PYGLOW.led(12, 0)
+    sleep(explode_speed)
+    PYGLOW.led(17, 0)
+    sleep(explode_speed)
+    PYGLOW.led(5, 0)
+    sleep(explode_speed)
+    PYGLOW.led(16, 0)
+    sleep(explode_speed)
+    PYGLOW.led(4, 0)
+    sleep(explode_speed)
+    PYGLOW.led(15, 0)
+    sleep(explode_speed)
+    PYGLOW.led(3, 0)
+    sleep(explode_speed)
+    PYGLOW.led(14, 0)
+    sleep(explode_speed)
+    PYGLOW.led(2, 0)
+    sleep(explode_speed)
+    PYGLOW.led(13, 0)
+    sleep(explode_speed)
+    PYGLOW.led(1, 0)
+    sleep(explode_speed)
+
+
+def exploding_snake_23():
+    """
+    Turns off the LEDs on arms 2 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Exploding Snake 23...")
+
+    explode_speed = 0.020
+
+    # Pulse
+    pulse_snake_23_or_32()
+
+    # Explode Snake 13
+    PYGLOW.led(6, 0)
+    sleep(explode_speed)
+    PYGLOW.led(12, 0)
+    sleep(explode_speed)
+    PYGLOW.led(11, 0)
+    sleep(explode_speed)
+    PYGLOW.led(17, 0)
+    sleep(explode_speed)
+    PYGLOW.led(10, 0)
+    sleep(explode_speed)
+    PYGLOW.led(16, 0)
+    sleep(explode_speed)
+    PYGLOW.led(9, 0)
+    sleep(explode_speed)
+    PYGLOW.led(15, 0)
+    sleep(explode_speed)
+    PYGLOW.led(8, 0)
+    sleep(explode_speed)
+    PYGLOW.led(14, 0)
+    sleep(explode_speed)
+    PYGLOW.led(7, 0)
+    sleep(explode_speed)
+    PYGLOW.led(13, 0)
+    sleep(explode_speed)
+
+
+def slithering_exploding_snake_12():
+    """
+    Lights up the LEDs on arms 1 and 2
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 12 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 12
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_12_or_21()
+    # Explode Snake 12
+    # Uncomment the following line for testing/debugging
+    # print("Snake 12 is exploding...")
+    explode_snake_12_or_21()
+
+
+def slithering_exploding_snake_13():
+    """
+    Lights up the LEDs on arms 1 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 13 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 13
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_13_or_31()
+    # Explode Snake 13
+    # Uncomment the following line for testing/debugging
+    # print("Snake 13 is exploding...")
+    explode_snake_13_or_31()
+
+
+def slithering_exploding_snake_21():
+    """
+    Lights up the LEDs on arms 2 and 1
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 21 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 21
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_12_or_21()
+    # Explode Snake 21
+    # Uncomment the following line for testing/debugging
+    # print("Snake 21 is exploding...")
+    explode_snake_12_or_21()
+
+
+def slithering_exploding_snake_23():
+    """
+    Lights up the LEDs on arms 2 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 23 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 23
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_23_or_32()
+    # Explode Snake 23
+    # Uncomment the following line for testing/debugging
+    # print("Snake 23 is exploding...")
+    explode_snake_23_or_32()
+
+
+def slithering_exploding_snake_31():
+    """
+    Lights up the LEDs on arms 3 and 1
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 31 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 31
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_13_or_31()
+    # Explode Snake 31
+    # Uncomment the following line for testing/debugging
+    # print("Snake 31 is exploding...")
+    explode_snake_13_or_31()
+
+
+def slithering_exploding_snake_32():
+    """
+    Lights up the LEDs on arms 3 and 2
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 32 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 32
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_23_or_32()
+    # Explode Snake 32
+    # Uncomment the following line for testing/debugging
+    # print("Snake 32 is slithering...")
+    explode_snake_23_or_32()
+
+
+def pulse_snake_12_or_21():
+    """
+    Lights up and pulses the LEDs on arms 1 and 2
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake is pulsing.")
+
+    pulse_speed = 175
+
+    while pulse_speed < 225:
+        # Uncomment the following line for testing/debugging
+        # print("Pulse speed is: ", pulse_speed)
+        PYGLOW.led(SNAKE_12_LEDS, 100, speed=pulse_speed, pulse=True)
+        sleep(0)
+        pulse_speed += 1
+    PYGLOW.led(SNAKE_12_LEDS, 100)
+    sleep(1)
+
+
+def pulse_snake_13_or_31():
+    """
+    Lights up and pulses the LEDs on arms 1 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake is pulsing.")
+
+    pulse_speed = 175
+
+    while pulse_speed < 225:
+        # Uncomment the following line for testing/debugging
+        # print("Pulse speed is: ", pulse_speed)
+        PYGLOW.led(SNAKE_13_LEDS, 100, speed=pulse_speed, pulse=True)
+        sleep(0)
+        pulse_speed += 1
+    PYGLOW.led(SNAKE_13_LEDS, 100)
+    sleep(1)
+
+
+def pulse_snake_23_or_32():
+    """
+    Lights up and pulses the LEDs on arms 2 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake is pulsing.")
+
+    pulse_speed = 175
+
+    while pulse_speed < 225:
+        # Uncomment the following line for testing/debugging
+        # print("Pulse speed is: ", pulse_speed)
+        PYGLOW.led(SNAKE_23_LEDS, 100, speed=pulse_speed, pulse=True)
+        sleep(0)
+        pulse_speed += 1
+    PYGLOW.led(SNAKE_23_LEDS, 100)
+    sleep(1)
+
+
+def explode_snake_12_or_21():
+    """
+    Lights up and turns off the LEDs on arms 1 and 2
+    """
+
+    explode_speed = 0.015
+
+    # Explode snake 12 or 21
+    PYGLOW.led(18, 0)
+    sleep(explode_speed)
+    PYGLOW.led(6, 0)
+    sleep(explode_speed)
+    PYGLOW.led(11, 0)
+    sleep(explode_speed)
+    PYGLOW.led(5, 0)
+    sleep(explode_speed)
+    PYGLOW.led(10, 0)
+    sleep(explode_speed)
+    PYGLOW.led(4, 0)
+    sleep(explode_speed)
+    PYGLOW.led(9, 0)
+    sleep(explode_speed)
+    PYGLOW.led(3, 0)
+    sleep(explode_speed)
+    PYGLOW.led(8, 0)
+    sleep(explode_speed)
+    PYGLOW.led(2, 0)
+    sleep(explode_speed)
+    PYGLOW.led(7, 0)
+    sleep(explode_speed)
+    PYGLOW.led(1, 0)
+
+
+def explode_snake_13_or_31():
+    """
+    Lights up and turns off the LEDs on arms 1 and 3
+    """
+
+    explode_speed = 0.020
+
+    # Explode snake 13 or 31
+    PYGLOW.led(18, 0)
+    sleep(explode_speed)
+    PYGLOW.led(12, 0)
+    sleep(explode_speed)
+    PYGLOW.led(17, 0)
+    sleep(explode_speed)
+    PYGLOW.led(5, 0)
+    sleep(explode_speed)
+    PYGLOW.led(16, 0)
+    sleep(explode_speed)
+    PYGLOW.led(4, 0)
+    sleep(explode_speed)
+    PYGLOW.led(15, 0)
+    sleep(explode_speed)
+    PYGLOW.led(3, 0)
+    sleep(explode_speed)
+    PYGLOW.led(14, 0)
+    sleep(explode_speed)
+    PYGLOW.led(2, 0)
+    sleep(explode_speed)
+    PYGLOW.led(13, 0)
+    sleep(explode_speed)
+    PYGLOW.led(1, 0)
+
+
+def explode_snake_23_or_32():
+    """
+    Lights up and turns off the LEDs on arms 2 and 3
+    """
+
+    explode_speed = 0.020
+
+    # Explode snake 23 or 32
+    PYGLOW.led(12, 0)
+    sleep(explode_speed)
+    PYGLOW.led(6, 0)
+    sleep(explode_speed)
+    PYGLOW.led(17, 0)
+    sleep(explode_speed)
+    PYGLOW.led(11, 0)
+    sleep(explode_speed)
+    PYGLOW.led(16, 0)
+    sleep(explode_speed)
+    PYGLOW.led(10, 0)
+    sleep(explode_speed)
+    PYGLOW.led(15, 0)
+    sleep(explode_speed)
+    PYGLOW.led(9, 0)
+    sleep(explode_speed)
+    PYGLOW.led(14, 0)
+    sleep(explode_speed)
+    PYGLOW.led(8, 0)
+    sleep(explode_speed)
+    PYGLOW.led(13, 0)
+    sleep(explode_speed)
+    PYGLOW.led(7, 0)
+
+
+def slithering_fizzling_fading_snake_12():
+    """
+    Lights up the LEDs on arms 1 and 2
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 12 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 12
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_12_or_21()
+    # Explode Snake 12
+    # Uncomment the following line for testing/debugging
+    # (print "Snake 12 is exploding...")
+    fizzling_snake_12_or_21()
+
+
+def slithering_fizzling_fading_snake_13():
+    """
+    Lights up the LEDs on arms 1 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 13 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 13
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_13_or_31()
+    # Explode Snake 13
+    # Uncomment the following line for testing/debugging
+    # print("Snake 13 is exploding...")
+    fizzling_snake_13_or_31()
+
+
+def slithering_fizzling_fading_snake_21():
+    """
+    Lights up the LEDs on arms 2 and 1
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 21 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 21
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_12_or_21()
+    # Explode Snake 21
+    # Uncomment the following line for testing/debugging
+    # print("Snake 21 is exploding...")
+    fizzling_snake_12_or_21()
+
+
+def slithering_fizzling_fading_snake_23():
+    """
+    Lights up the LEDs on arms 2 and 3
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 23 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 23
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_23_or_32()
+    # Explode Snake 23
+    # Uncomment the following line for testing/debugging
+    # print("Snake 23 is exploding...")
+    fizzling_snake_23_or_32()
+
+
+def slithering_fizzling_fading_snake_31():
+    """
+    Lights up the LEDs on arms 3 and 1
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 31 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 31
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(18, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(5, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(4, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(3, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(2, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(1, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_13_or_31()
+    # Explode Snake 31
+    # Uncomment the following line for testing/debugging
+    # print("Snake 31 is exploding...")
+    fizzling_snake_13_or_31()
+
+
+def slithering_fizzling_fading_snake_32():
+    """
+    Lights up the LEDs on arms 3 and 2
+    """
+    # Uncomment the following line for testing/debugging
+    # print("Snake 32 is slithering...")
+
+    sleep_speed = 0.10
+
+    # Light up Snake 32
+    PYGLOW.led(13, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(14, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(15, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(16, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(17, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(6, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(12, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(11, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(10, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(9, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(8, 100)
+    sleep(sleep_speed)
+    PYGLOW.led(7, 100)
+    sleep(sleep_speed)
+    # Pulse
+    pulse_snake_23_or_32()
+    # Explode Snake 32
+    # Uncomment the following line for testing/debugging
+    # print("Snake 32 is exploding...")
+    fizzling_snake_23_or_32()
+
+
+def fizzling_snake_12_or_21():
+    """
+    Fades the LEDs on arms 1 and 2
+    """
+    # Variables
+    explode_speed = 0.01
+    # Fade Body 5 (on both sides)
+    PYGLOW.led(18, 90)
+    sleep(explode_speed)
+    PYGLOW.led(6, 90)
+    sleep(explode_speed)
+    # Fade Body 5 and 4
+    PYGLOW.led(18, 80)
+    sleep(explode_speed)
+    PYGLOW.led(6, 80)
+    sleep(explode_speed)
+    PYGLOW.led(11, 90)
+    sleep(explode_speed)
+    PYGLOW.led(5, 90)
+    # Fade Body 5 - 3
+    PYGLOW.led(18, 70)
+    sleep(explode_speed)
+    PYGLOW.led(6, 70)
+    sleep(explode_speed)
+    PYGLOW.led(11, 80)
+    sleep(explode_speed)
+    PYGLOW.led(5, 80)
+    sleep(explode_speed)
+    PYGLOW.led(10, 90)
+    sleep(explode_speed)
+    PYGLOW.led(4, 90)
+    # Fade Body 5 - 2
+    PYGLOW.led(18, 60)
+    sleep(explode_speed)
+    PYGLOW.led(6, 60)
+    sleep(explode_speed)
+    PYGLOW.led(11, 70)
+    sleep(explode_speed)
+    PYGLOW.led(5, 70)
+    sleep(explode_speed)
+    PYGLOW.led(10, 80)
+    sleep(explode_speed)
+    PYGLOW.led(4, 80)
+    sleep(explode_speed)
+    PYGLOW.led(9, 90)
+    sleep(explode_speed)
+    PYGLOW.led(3, 90)
+    # Fade Body 5 - 1
+    PYGLOW.led(18, 50)
+    sleep(explode_speed)
+    PYGLOW.led(6, 50)
+    sleep(explode_speed)
+    PYGLOW.led(11, 60)
+    sleep(explode_speed)
+    PYGLOW.led(5, 60)
+    sleep(explode_speed)
+    PYGLOW.led(10, 70)
+    sleep(explode_speed)
+    PYGLOW.led(4, 70)
+    sleep(explode_speed)
+    PYGLOW.led(9, 80)
+    sleep(explode_speed)
+    PYGLOW.led(3, 80)
+    sleep(explode_speed)
+    PYGLOW.led(8, 90)
+    sleep(explode_speed)
+    PYGLOW.led(2, 90)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 40)
+    sleep(explode_speed)
+    PYGLOW.led(6, 40)
+    sleep(explode_speed)
+    PYGLOW.led(11, 50)
+    sleep(explode_speed)
+    PYGLOW.led(5, 50)
+    sleep(explode_speed)
+    PYGLOW.led(10, 60)
+    sleep(explode_speed)
+    PYGLOW.led(4, 60)
+    sleep(explode_speed)
+    PYGLOW.led(9, 70)
+    sleep(explode_speed)
+    PYGLOW.led(3, 70)
+    sleep(explode_speed)
+    PYGLOW.led(8, 80)
+    sleep(explode_speed)
+    PYGLOW.led(2, 80)
+    sleep(explode_speed)
+    PYGLOW.led(7, 90)
+    sleep(explode_speed)
+    PYGLOW.led(1, 90)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 30)
+    sleep(explode_speed)
+    PYGLOW.led(6, 30)
+    sleep(explode_speed)
+    PYGLOW.led(11, 40)
+    sleep(explode_speed)
+    PYGLOW.led(5, 40)
+    sleep(explode_speed)
+    PYGLOW.led(10, 50)
+    sleep(explode_speed)
+    PYGLOW.led(4, 50)
+    sleep(explode_speed)
+    PYGLOW.led(9, 60)
+    sleep(explode_speed)
+    PYGLOW.led(3, 60)
+    sleep(explode_speed)
+    PYGLOW.led(8, 70)
+    sleep(explode_speed)
+    PYGLOW.led(2, 70)
+    sleep(explode_speed)
+    PYGLOW.led(7, 80)
+    sleep(explode_speed)
+    PYGLOW.led(1, 80)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 20)
+    sleep(explode_speed)
+    PYGLOW.led(6, 20)
+    sleep(explode_speed)
+    PYGLOW.led(11, 30)
+    sleep(explode_speed)
+    PYGLOW.led(5, 30)
+    sleep(explode_speed)
+    PYGLOW.led(10, 40)
+    sleep(explode_speed)
+    PYGLOW.led(4, 40)
+    sleep(explode_speed)
+    PYGLOW.led(9, 50)
+    sleep(explode_speed)
+    PYGLOW.led(3, 50)
+    sleep(explode_speed)
+    PYGLOW.led(8, 60)
+    sleep(explode_speed)
+    PYGLOW.led(2, 60)
+    sleep(explode_speed)
+    PYGLOW.led(7, 70)
+    sleep(explode_speed)
+    PYGLOW.led(1, 70)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 10)
+    sleep(explode_speed)
+    PYGLOW.led(6, 10)
+    sleep(explode_speed)
+    PYGLOW.led(11, 20)
+    sleep(explode_speed)
+    PYGLOW.led(5, 20)
+    sleep(explode_speed)
+    PYGLOW.led(10, 30)
+    sleep(explode_speed)
+    PYGLOW.led(4, 30)
+    sleep(explode_speed)
+    PYGLOW.led(9, 40)
+    sleep(explode_speed)
+    PYGLOW.led(3, 40)
+    sleep(explode_speed)
+    PYGLOW.led(8, 50)
+    sleep(explode_speed)
+    PYGLOW.led(2, 50)
+    sleep(explode_speed)
+    PYGLOW.led(7, 60)
+    sleep(explode_speed)
+    PYGLOW.led(1, 60)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 0)
+    sleep(explode_speed)
+    PYGLOW.led(6, 0)
+    sleep(explode_speed)
+    PYGLOW.led(11, 10)
+    sleep(explode_speed)
+    PYGLOW.led(5, 10)
+    sleep(explode_speed)
+    PYGLOW.led(10, 20)
+    sleep(explode_speed)
+    PYGLOW.led(4, 20)
+    sleep(explode_speed)
+    PYGLOW.led(9, 30)
+    sleep(explode_speed)
+    PYGLOW.led(3, 30)
+    sleep(explode_speed)
+    PYGLOW.led(8, 40)
+    sleep(explode_speed)
+    PYGLOW.led(2, 40)
+    sleep(explode_speed)
+    PYGLOW.led(7, 50)
+    sleep(explode_speed)
+    PYGLOW.led(1, 50)
+    sleep(explode_speed)
+    # Fade Body 4 -1, Head and Tail
+    PYGLOW.led(11, 0)
+    sleep(explode_speed)
+    PYGLOW.led(5, 0)
+    sleep(explode_speed)
+    PYGLOW.led(10, 10)
+    sleep(explode_speed)
+    PYGLOW.led(4, 10)
+    sleep(explode_speed)
+    PYGLOW.led(9, 20)
+    sleep(explode_speed)
+    PYGLOW.led(3, 20)
+    sleep(explode_speed)
+    PYGLOW.led(8, 30)
+    sleep(explode_speed)
+    PYGLOW.led(2, 30)
+    sleep(explode_speed)
+    PYGLOW.led(7, 40)
+    sleep(explode_speed)
+    PYGLOW.led(1, 40)
+    sleep(explode_speed)
+    # Fade Body 3 -1, Head and Tail
+    PYGLOW.led(10, 0)
+    sleep(explode_speed)
+    PYGLOW.led(4, 0)
+    sleep(explode_speed)
+    PYGLOW.led(9, 10)
+    sleep(explode_speed)
+    PYGLOW.led(3, 10)
+    sleep(explode_speed)
+    PYGLOW.led(8, 20)
+    sleep(explode_speed)
+    PYGLOW.led(2, 20)
+    sleep(explode_speed)
+    PYGLOW.led(7, 30)
+    sleep(explode_speed)
+    PYGLOW.led(1, 30)
+    sleep(explode_speed)
+    # Fade Body 2 - 1, Head and Tail
+    PYGLOW.led(9, 0)
+    sleep(explode_speed)
+    PYGLOW.led(3, 0)
+    sleep(explode_speed)
+    PYGLOW.led(8, 10)
+    sleep(explode_speed)
+    PYGLOW.led(2, 10)
+    sleep(explode_speed)
+    PYGLOW.led(7, 20)
+    sleep(explode_speed)
+    PYGLOW.led(1, 20)
+    sleep(explode_speed)
+    # Fade Body 1, Head and Tail
+    PYGLOW.led(8, 0)
+    sleep(explode_speed)
+    PYGLOW.led(2, 0)
+    sleep(explode_speed)
+    PYGLOW.led(7, 10)
+    sleep(explode_speed)
+    PYGLOW.led(1, 10)
+    sleep(explode_speed)
+    # Fade Head and Tail
+    PYGLOW.led(7, 0)
+    sleep(explode_speed)
+    PYGLOW.led(1, 0)
+    sleep(explode_speed)
+
+
+def fizzling_snake_13_or_31():
+    """
+    Fades the LEDs on arms 1 and 3
+    """
+
+    explode_speed = 0.01
+
+    # Fade Body 5 (on both sides)
+    PYGLOW.led(18, 90)
+    sleep(explode_speed)
+    PYGLOW.led(12, 90)
+    sleep(explode_speed)
+    # Fade Body 5 and 4
+    PYGLOW.led(18, 80)
+    sleep(explode_speed)
+    PYGLOW.led(12, 80)
+    sleep(explode_speed)
+    PYGLOW.led(17, 90)
+    sleep(explode_speed)
+    PYGLOW.led(5, 90)
+    # Fade Body 5 - 3
+    PYGLOW.led(18, 70)
+    sleep(explode_speed)
+    PYGLOW.led(12, 70)
+    sleep(explode_speed)
+    PYGLOW.led(17, 80)
+    sleep(explode_speed)
+    PYGLOW.led(5, 80)
+    sleep(explode_speed)
+    PYGLOW.led(16, 90)
+    sleep(explode_speed)
+    PYGLOW.led(4, 90)
+    # Fade Body 5 - 2
+    PYGLOW.led(18, 60)
+    sleep(explode_speed)
+    PYGLOW.led(12, 60)
+    sleep(explode_speed)
+    PYGLOW.led(17, 70)
+    sleep(explode_speed)
+    PYGLOW.led(5, 70)
+    sleep(explode_speed)
+    PYGLOW.led(16, 80)
+    sleep(explode_speed)
+    PYGLOW.led(4, 80)
+    sleep(explode_speed)
+    PYGLOW.led(15, 90)
+    sleep(explode_speed)
+    PYGLOW.led(3, 90)
+    # Fade Body 5 - 1
+    PYGLOW.led(18, 50)
+    sleep(explode_speed)
+    PYGLOW.led(12, 50)
+    sleep(explode_speed)
+    PYGLOW.led(17, 60)
+    sleep(explode_speed)
+    PYGLOW.led(5, 60)
+    sleep(explode_speed)
+    PYGLOW.led(16, 70)
+    sleep(explode_speed)
+    PYGLOW.led(4, 70)
+    sleep(explode_speed)
+    PYGLOW.led(15, 80)
+    sleep(explode_speed)
+    PYGLOW.led(3, 80)
+    sleep(explode_speed)
+    PYGLOW.led(14, 90)
+    sleep(explode_speed)
+    PYGLOW.led(2, 90)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 40)
+    sleep(explode_speed)
+    PYGLOW.led(12, 40)
+    sleep(explode_speed)
+    PYGLOW.led(17, 50)
+    sleep(explode_speed)
+    PYGLOW.led(5, 50)
+    sleep(explode_speed)
+    PYGLOW.led(16, 60)
+    sleep(explode_speed)
+    PYGLOW.led(4, 60)
+    sleep(explode_speed)
+    PYGLOW.led(15, 70)
+    sleep(explode_speed)
+    PYGLOW.led(3, 70)
+    sleep(explode_speed)
+    PYGLOW.led(4, 80)
+    sleep(explode_speed)
+    PYGLOW.led(2, 80)
+    sleep(explode_speed)
+    PYGLOW.led(3, 90)
+    sleep(explode_speed)
+    PYGLOW.led(1, 90)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 30)
+    sleep(explode_speed)
+    PYGLOW.led(12, 30)
+    sleep(explode_speed)
+    PYGLOW.led(17, 40)
+    sleep(explode_speed)
+    PYGLOW.led(5, 40)
+    sleep(explode_speed)
+    PYGLOW.led(16, 50)
+    sleep(explode_speed)
+    PYGLOW.led(4, 50)
+    sleep(explode_speed)
+    PYGLOW.led(15, 60)
+    sleep(explode_speed)
+    PYGLOW.led(3, 60)
+    sleep(explode_speed)
+    PYGLOW.led(14, 70)
+    sleep(explode_speed)
+    PYGLOW.led(2, 70)
+    sleep(explode_speed)
+    PYGLOW.led(13, 80)
+    sleep(explode_speed)
+    PYGLOW.led(1, 80)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 20)
+    sleep(explode_speed)
+    PYGLOW.led(2, 20)
+    sleep(explode_speed)
+    PYGLOW.led(17, 30)
+    sleep(explode_speed)
+    PYGLOW.led(5, 30)
+    sleep(explode_speed)
+    PYGLOW.led(16, 40)
+    sleep(explode_speed)
+    PYGLOW.led(4, 40)
+    sleep(explode_speed)
+    PYGLOW.led(15, 50)
+    sleep(explode_speed)
+    PYGLOW.led(3, 50)
+    sleep(explode_speed)
+    PYGLOW.led(14, 60)
+    sleep(explode_speed)
+    PYGLOW.led(2, 60)
+    sleep(explode_speed)
+    PYGLOW.led(13, 70)
+    sleep(explode_speed)
+    PYGLOW.led(1, 70)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 10)
+    sleep(explode_speed)
+    PYGLOW.led(12, 10)
+    sleep(explode_speed)
+    PYGLOW.led(17, 20)
+    sleep(explode_speed)
+    PYGLOW.led(5, 20)
+    sleep(explode_speed)
+    PYGLOW.led(16, 30)
+    sleep(explode_speed)
+    PYGLOW.led(4, 30)
+    sleep(explode_speed)
+    PYGLOW.led(15, 40)
+    sleep(explode_speed)
+    PYGLOW.led(3, 40)
+    sleep(explode_speed)
+    PYGLOW.led(14, 50)
+    sleep(explode_speed)
+    PYGLOW.led(2, 50)
+    sleep(explode_speed)
+    PYGLOW.led(3, 60)
+    sleep(explode_speed)
+    PYGLOW.led(1, 60)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(18, 0)
+    sleep(explode_speed)
+    PYGLOW.led(12, 0)
+    sleep(explode_speed)
+    PYGLOW.led(17, 10)
+    sleep(explode_speed)
+    PYGLOW.led(5, 10)
+    sleep(explode_speed)
+    PYGLOW.led(16, 20)
+    sleep(explode_speed)
+    PYGLOW.led(4, 20)
+    sleep(explode_speed)
+    PYGLOW.led(15, 30)
+    sleep(explode_speed)
+    PYGLOW.led(3, 30)
+    sleep(explode_speed)
+    PYGLOW.led(14, 40)
+    sleep(explode_speed)
+    PYGLOW.led(2, 40)
+    sleep(explode_speed)
+    PYGLOW.led(13, 50)
+    sleep(explode_speed)
+    PYGLOW.led(1, 50)
+    sleep(explode_speed)
+    # Fade Body 4 -1, Head and Tail
+    PYGLOW.led(17, 0)
+    sleep(explode_speed)
+    PYGLOW.led(5, 0)
+    sleep(explode_speed)
+    PYGLOW.led(16, 10)
+    sleep(explode_speed)
+    PYGLOW.led(4, 10)
+    sleep(explode_speed)
+    PYGLOW.led(15, 20)
+    sleep(explode_speed)
+    PYGLOW.led(3, 20)
+    sleep(explode_speed)
+    PYGLOW.led(14, 30)
+    sleep(explode_speed)
+    PYGLOW.led(2, 30)
+    sleep(explode_speed)
+    PYGLOW.led(13, 40)
+    sleep(explode_speed)
+    PYGLOW.led(1, 40)
+    sleep(explode_speed)
+    # Fade Body 3 -1, Head and Tail
+    PYGLOW.led(16, 0)
+    sleep(explode_speed)
+    PYGLOW.led(4, 0)
+    sleep(explode_speed)
+    PYGLOW.led(15, 10)
+    sleep(explode_speed)
+    PYGLOW.led(3, 10)
+    sleep(explode_speed)
+    PYGLOW.led(14, 20)
+    sleep(explode_speed)
+    PYGLOW.led(2, 20)
+    sleep(explode_speed)
+    PYGLOW.led(13, 30)
+    sleep(explode_speed)
+    PYGLOW.led(1, 30)
+    sleep(explode_speed)
+    # Fade Body 2 - 1, Head and Tail
+    PYGLOW.led(15, 0)
+    sleep(explode_speed)
+    PYGLOW.led(3, 0)
+    sleep(explode_speed)
+    PYGLOW.led(14, 10)
+    sleep(explode_speed)
+    PYGLOW.led(2, 10)
+    sleep(explode_speed)
+    PYGLOW.led(13, 20)
+    sleep(explode_speed)
+    PYGLOW.led(1, 20)
+    sleep(explode_speed)
+    # Fade Body 1, Head and Tail
+    PYGLOW.led(14, 0)
+    sleep(explode_speed)
+    PYGLOW.led(2, 0)
+    sleep(explode_speed)
+    PYGLOW.led(13, 10)
+    sleep(explode_speed)
+    PYGLOW.led(1, 10)
+    sleep(explode_speed)
+    # Fade Head and Tail
+    PYGLOW.led(13, 0)
+    sleep(explode_speed)
+    PYGLOW.led(1, 0)
+    sleep(explode_speed)
+
+
+def fizzling_snake_23_or_32():
+    """
+    Fades the LEDs on arms 2 and 3
+    """
+
+    explode_speed = 0.01
+
+    # Fade Body 5 (on both sides)
+    PYGLOW.led(12, 90)
+    sleep(explode_speed)
+    PYGLOW.led(6, 90)
+    sleep(explode_speed)
+    # Fade Body 5 and 4
+    PYGLOW.led(12, 80)
+    sleep(explode_speed)
+    PYGLOW.led(6, 80)
+    sleep(explode_speed)
+    PYGLOW.led(17, 90)
+    sleep(explode_speed)
+    PYGLOW.led(11, 90)
+    # Fade Body 5 - 3
+    PYGLOW.led(12, 70)
+    sleep(explode_speed)
+    PYGLOW.led(6, 70)
+    sleep(explode_speed)
+    PYGLOW.led(17, 80)
+    sleep(explode_speed)
+    PYGLOW.led(11, 80)
+    sleep(explode_speed)
+    PYGLOW.led(16, 90)
+    sleep(explode_speed)
+    PYGLOW.led(10, 90)
+    # Fade Body 5 - 2
+    PYGLOW.led(12, 60)
+    sleep(explode_speed)
+    PYGLOW.led(6, 60)
+    sleep(explode_speed)
+    PYGLOW.led(17, 70)
+    sleep(explode_speed)
+    PYGLOW.led(11, 70)
+    sleep(explode_speed)
+    PYGLOW.led(16, 80)
+    sleep(explode_speed)
+    PYGLOW.led(10, 80)
+    sleep(explode_speed)
+    PYGLOW.led(15, 90)
+    sleep(explode_speed)
+    PYGLOW.led(9, 90)
+    # Fade Body 5 - 1
+    PYGLOW.led(12, 50)
+    sleep(explode_speed)
+    PYGLOW.led(6, 50)
+    sleep(explode_speed)
+    PYGLOW.led(17, 60)
+    sleep(explode_speed)
+    PYGLOW.led(11, 60)
+    sleep(explode_speed)
+    PYGLOW.led(16, 70)
+    sleep(explode_speed)
+    PYGLOW.led(10, 70)
+    sleep(explode_speed)
+    PYGLOW.led(15, 80)
+    sleep(explode_speed)
+    PYGLOW.led(9, 80)
+    sleep(explode_speed)
+    PYGLOW.led(14, 90)
+    sleep(explode_speed)
+    PYGLOW.led(8, 90)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(12, 40)
+    sleep(explode_speed)
+    PYGLOW.led(6, 40)
+    sleep(explode_speed)
+    PYGLOW.led(17, 50)
+    sleep(explode_speed)
+    PYGLOW.led(11, 50)
+    sleep(explode_speed)
+    PYGLOW.led(16, 60)
+    sleep(explode_speed)
+    PYGLOW.led(10, 60)
+    sleep(explode_speed)
+    PYGLOW.led(15, 70)
+    sleep(explode_speed)
+    PYGLOW.led(9, 70)
+    sleep(explode_speed)
+    PYGLOW.led(14, 80)
+    sleep(explode_speed)
+    PYGLOW.led(8, 80)
+    sleep(explode_speed)
+    PYGLOW.led(13, 90)
+    sleep(explode_speed)
+    PYGLOW.led(7, 90)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(12, 30)
+    sleep(explode_speed)
+    PYGLOW.led(6, 30)
+    sleep(explode_speed)
+    PYGLOW.led(17, 40)
+    sleep(explode_speed)
+    PYGLOW.led(11, 40)
+    sleep(explode_speed)
+    PYGLOW.led(16, 50)
+    sleep(explode_speed)
+    PYGLOW.led(10, 50)
+    sleep(explode_speed)
+    PYGLOW.led(15, 60)
+    sleep(explode_speed)
+    PYGLOW.led(9, 60)
+    sleep(explode_speed)
+    PYGLOW.led(14, 70)
+    sleep(explode_speed)
+    PYGLOW.led(8, 70)
+    sleep(explode_speed)
+    PYGLOW.led(13, 80)
+    sleep(explode_speed)
+    PYGLOW.led(7, 80)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(12, 20)
+    sleep(explode_speed)
+    PYGLOW.led(6, 20)
+    sleep(explode_speed)
+    PYGLOW.led(17, 30)
+    sleep(explode_speed)
+    PYGLOW.led(11, 30)
+    sleep(explode_speed)
+    PYGLOW.led(16, 40)
+    sleep(explode_speed)
+    PYGLOW.led(10, 40)
+    sleep(explode_speed)
+    PYGLOW.led(15, 50)
+    sleep(explode_speed)
+    PYGLOW.led(9, 50)
+    sleep(explode_speed)
+    PYGLOW.led(14, 60)
+    sleep(explode_speed)
+    PYGLOW.led(8, 60)
+    sleep(explode_speed)
+    PYGLOW.led(13, 70)
+    sleep(explode_speed)
+    PYGLOW.led(7, 70)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(12, 10)
+    sleep(explode_speed)
+    PYGLOW.led(6, 10)
+    sleep(explode_speed)
+    PYGLOW.led(17, 20)
+    sleep(explode_speed)
+    PYGLOW.led(11, 20)
+    sleep(explode_speed)
+    PYGLOW.led(16, 30)
+    sleep(explode_speed)
+    PYGLOW.led(10, 30)
+    sleep(explode_speed)
+    PYGLOW.led(15, 40)
+    sleep(explode_speed)
+    PYGLOW.led(9, 40)
+    sleep(explode_speed)
+    PYGLOW.led(14, 50)
+    sleep(explode_speed)
+    PYGLOW.led(8, 50)
+    sleep(explode_speed)
+    PYGLOW.led(13, 60)
+    sleep(explode_speed)
+    PYGLOW.led(7, 60)
+    sleep(explode_speed)
+    # Fade Body 5 -1, Head and Tail
+    PYGLOW.led(12, 0)
+    sleep(explode_speed)
+    PYGLOW.led(6, 0)
+    sleep(explode_speed)
+    PYGLOW.led(17, 10)
+    sleep(explode_speed)
+    PYGLOW.led(11, 10)
+    sleep(explode_speed)
+    PYGLOW.led(16, 20)
+    sleep(explode_speed)
+    PYGLOW.led(10, 20)
+    sleep(explode_speed)
+    PYGLOW.led(15, 30)
+    sleep(explode_speed)
+    PYGLOW.led(9, 30)
+    sleep(explode_speed)
+    PYGLOW.led(14, 40)
+    sleep(explode_speed)
+    PYGLOW.led(8, 40)
+    sleep(explode_speed)
+    PYGLOW.led(13, 50)
+    sleep(explode_speed)
+    PYGLOW.led(7, 50)
+    sleep(explode_speed)
+    # Fade Body 4 -1, Head and Tail
+    PYGLOW.led(17, 0)
+    sleep(explode_speed)
+    PYGLOW.led(11, 0)
+    sleep(explode_speed)
+    PYGLOW.led(16, 10)
+    sleep(explode_speed)
+    PYGLOW.led(10, 10)
+    sleep(explode_speed)
+    PYGLOW.led(15, 20)
+    sleep(explode_speed)
+    PYGLOW.led(9, 20)
+    sleep(explode_speed)
+    PYGLOW.led(14, 30)
+    sleep(explode_speed)
+    PYGLOW.led(8, 30)
+    sleep(explode_speed)
+    PYGLOW.led(13, 40)
+    sleep(explode_speed)
+    PYGLOW.led(7, 40)
+    sleep(explode_speed)
+    # Fade Body 3 -1, Head and Tail
+    PYGLOW.led(16, 0)
+    sleep(explode_speed)
+    PYGLOW.led(10, 0)
+    sleep(explode_speed)
+    PYGLOW.led(15, 10)
+    sleep(explode_speed)
+    PYGLOW.led(9, 10)
+    sleep(explode_speed)
+    PYGLOW.led(14, 20)
+    sleep(explode_speed)
+    PYGLOW.led(8, 20)
+    sleep(explode_speed)
+    PYGLOW.led(13, 30)
+    sleep(explode_speed)
+    PYGLOW.led(7, 30)
+    sleep(explode_speed)
+    # Fade Body 2 - 1, Head and Tail
+    PYGLOW.led(15, 0)
+    sleep(explode_speed)
+    PYGLOW.led(9, 0)
+    sleep(explode_speed)
+    PYGLOW.led(14, 10)
+    sleep(explode_speed)
+    PYGLOW.led(8, 10)
+    sleep(explode_speed)
+    PYGLOW.led(13, 20)
+    sleep(explode_speed)
+    PYGLOW.led(7, 20)
+    sleep(explode_speed)
+    # Fade Body 1, Head and Tail
+    PYGLOW.led(14, 0)
+    sleep(explode_speed)
+    PYGLOW.led(8, 0)
+    sleep(explode_speed)
+    PYGLOW.led(13, 10)
+    sleep(explode_speed)
+    PYGLOW.led(7, 10)
+    sleep(explode_speed)
+    # Fade Head and Tail
+    PYGLOW.led(13, 0)
+    sleep(explode_speed)
+    PYGLOW.led(7, 0)
+    sleep(explode_speed)
+
+
+if __name__ == '__main__':
+    main()
