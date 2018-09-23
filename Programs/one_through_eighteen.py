@@ -67,6 +67,7 @@ def main():
     LOGGER.debug("START")
 
     print_piglow_header()
+    # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
         one_through_eighteen()
