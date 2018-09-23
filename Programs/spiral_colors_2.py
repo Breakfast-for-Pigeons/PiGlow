@@ -484,7 +484,6 @@ def go_really_fast():
         orange_leds_off(sleep_speed)
         red_leds_off(sleep_speed)
         # decrease counter
-        # decrease counter
         counter -= 1
 
 
