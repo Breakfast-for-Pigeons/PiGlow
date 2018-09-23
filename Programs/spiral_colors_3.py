@@ -31,8 +31,6 @@ Functions:
 
 ....................
 
-Requirements: PyGlow.py
-
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
     print_piglow_header.py
