@@ -30,6 +30,7 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import os
 import logging
 from time import sleep
 from PyGlow import PyGlow
@@ -43,10 +44,10 @@ PYGLOW = PyGlow()
 PYGLOW.all(0)
 
 # Logging
-LOG = 'one_through_eighteen.log'
+LOG = 'Logs/01_one_through_eighteen.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+LOGGER.setLevel(logging.INFO)    # Nothing will log unless changed to DEBUG
 FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
                               datefmt='%m/%d/%y %I:%M:%S %p:')
 FILE_HANDLER = logging.FileHandler(LOG, 'w')
@@ -127,11 +128,29 @@ def run_10_times():
         counter -= 1                       # decrease counter
 
 
+def delete_empty_logs():
+    """
+    Delete empty log fles
+
+    Log files will always be created. But they will be empty if the
+    log level is set to anything higher than DEBUG, since only DEBUG
+    messages are logged. If the log files are empty, they will be
+    deleted.
+    """
+
+    logs = [LOG, 'Logs/print_piglow_header.log']
+
+    for log in logs:
+        if os.stat(log).st_size == 0:
+            os.remove(log)
+
+
 def stop():
     """
     Print exit message and turn off the PiGlow
     """
     LOGGER.debug("END")
+    delete_empty_logs()
     print("\nExiting program.")
     PYGLOW.all(0)
 
