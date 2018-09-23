@@ -23,7 +23,11 @@ Functions:
 
 ....................
 
-Requirements: PyGlow.py
+Requirements:
+    PyGlow.py (many thanks to benleb for this program)
+    print_piglow_header.py
+    
+You will have these files if you downloaded the entire repository.
 
 ....................
 
