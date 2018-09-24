@@ -55,7 +55,7 @@ PYGLOW = PyGlow()
 PYGLOW.all(0)
 
 # Logging
-LOG = 'reverse_inside_out_3.log'
+LOG = 'reverse_inside_out.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
