@@ -61,7 +61,7 @@ PYGLOW = PyGlow()
 PYGLOW.all(0)
 
 # Logging
-LOG = 'spiral_colors_2.log'
+LOG = 'spiral_colors_3.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
