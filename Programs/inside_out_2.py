@@ -5,8 +5,7 @@ Inside Out 2
 A variation of Inside Out. This program lights up the
 indivdual colors like in Inside Out, but they stay on until
 all leds are on. Then they are turned off in reverse order.
-Then the speed gradually increases. Then the program starts
-over again.
+Then the speed gradually increases. 
 
 ....................
 
