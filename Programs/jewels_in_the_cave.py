@@ -20,7 +20,11 @@ Functions:
 
 ....................
 
-Requirements: PyGlow.py
+Requirements:
+    PyGlow.py (many thanks to benleb for this program)
+    print_piglow_header.py
+
+You will have these files if you downloaded the entire repository.
 
 ....................
 
@@ -35,18 +39,16 @@ This program was written on a Raspberry Pi using the Geany IDE.
 import random
 from time import sleep
 from PyGlow import PyGlow
-
-########################################################################
-#                           Variables                                  #
-########################################################################
-
-PYGLOW = PyGlow()
+from print_piglow_header import print_piglow_header
 
 ########################################################################
 #                           Initialize                                 #
 ########################################################################
 
+PYGLOW = PyGlow()
 PYGLOW.all(0)
+
+SLEEP_SPEED = 0.10
 
 ########################################################################
 #                            Functions                                 #
@@ -55,14 +57,18 @@ PYGLOW.all(0)
 
 def main():
     """ The main fuction """
-    print("Press Ctrl-C to stop the program.")
+
+    print_piglow_header()
+
+    # Force white text after selecting random colored header
+    print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
         while True:
             jewels_in_the_cave()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
         print("\nExiting program.")
-        PYGLOW.all(0)
+    PYGLOW.all(0)
 
 
 def jewels_in_the_cave():
@@ -84,7 +90,6 @@ def jewels_in_the_cave():
     random_led = int(random.choice(list_of_leds))
     PYGLOW.led(random_led, 0)
     sleep(sleep_speed)
-
 
 if __name__ == '__main__':
     main()
