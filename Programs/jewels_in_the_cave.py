@@ -36,6 +36,8 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import os
+import logging
 import random
 from time import sleep
 from PyGlow import PyGlow
@@ -49,6 +51,17 @@ PYGLOW = PyGlow()
 PYGLOW.all(0)
 
 SLEEP_SPEED = 0.10
+
+# Logging
+LOG = 'jewels_in_the_cave.log'
+LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                              datefmt='%m/%d/%y %I:%M:%S %p:')
+FILE_HANDLER = logging.FileHandler(LOG, 'w')
+FILE_HANDLER.setFormatter(FORMATTER)
+LOGGER.addHandler(FILE_HANDLER)
 
 ########################################################################
 #                            Functions                                 #
@@ -67,8 +80,7 @@ def main():
             jewels_in_the_cave()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
-        print("\nExiting program.")
-    PYGLOW.all(0)
+        stop()
 
 
 def jewels_in_the_cave():
@@ -90,6 +102,34 @@ def jewels_in_the_cave():
     random_led = int(random.choice(list_of_leds))
     PYGLOW.led(random_led, 0)
     sleep(sleep_speed)
+
+
+def delete_empty_logs():
+    """
+    Delete empty log fles
+
+    Log files will always be created. But they will be empty if the
+    log level is set to anything higher than DEBUG, since only DEBUG
+    messages are logged. If the log files are empty, they will be
+    deleted.
+    """
+
+    logs = [LOG, 'print_piglow_header.log']
+
+    for log in logs:
+        if os.stat(log).st_size == 0:
+            os.remove(log)
+
+
+def stop():
+    """
+    Print exit message and turn off the PiGlow
+    """
+    LOGGER.debug("END")
+    delete_empty_logs()
+    print("\nExiting program.")
+    PYGLOW.all(0)
+
 
 if __name__ == '__main__':
     main()
