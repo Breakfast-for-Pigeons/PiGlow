@@ -355,7 +355,7 @@ def slithering_exploding_snake_32():
     # Pulse
     pulse_snake_23_or_32()
     # Explode Snake 32
-    LOGGER.debug("Snake 32 is slithering...")
+    LOGGER.debug("Snake 32 is exploding...")
     explode_snake_23_or_32()
     # Pause before next snake
     sleep(1)
