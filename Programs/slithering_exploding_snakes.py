@@ -19,10 +19,16 @@ Functions:
 - explode_snake_12_or_21: Turns off the LEDs on arms 1 and 2
 - explode_snake_13_or_31: Turns off the LEDs on arms 1 and 3
 - explode_snake_23_or_32: Turns off the LEDs on arms 2 and 3
+- delete_empty_logs: Deletes empty log fles
+- stop: Print exit message and turn off the PiGlow
 
 ....................
 
-Requirements: PyGlow.py
+Requirements:
+    PyGlow.py (many thanks to benleb for this program)
+    print_piglow_header.py
+
+You will have these files if you downloaded the entire repository.
 
 ....................
 
@@ -34,15 +40,31 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import os
+import logging
 from time import sleep
 from PyGlow import PyGlow
+from print_piglow_header import print_piglow_header
 
 ########################################################################
-#                           Variables                                  #
+#                           Initialize                                 #
 ########################################################################
 
 PYGLOW = PyGlow()
+PYGLOW.all(0)
+
 SLEEP_SPEED = 0.10
+
+# Logging
+LOG = 'slithering_exploding_snakes.log'
+LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                              datefmt='%m/%d/%y %I:%M:%S %p:')
+FILE_HANDLER = logging.FileHandler(LOG, 'w')
+FILE_HANDLER.setFormatter(FORMATTER)
+LOGGER.addHandler(FILE_HANDLER)
 
 ########################################################################
 #                            Lists                                     #
@@ -64,49 +86,53 @@ def main():
     """
     The main function
     """
-    print("Press Ctrl-C to stop the program.")
+    LOGGER.debug("START")
+
+    print_piglow_header()
+
+    # Force white text after selecting random colored header
+    print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
-        while True:
-            # Snakes 12, 13, 21, 23, 31, 32
-            slithering_exploding_snake_12()
-            slithering_exploding_snake_13()
-            slithering_exploding_snake_21()
-            slithering_exploding_snake_23()
-            slithering_exploding_snake_31()
-            slithering_exploding_snake_32()
-            # Snakes 12, 23, 31, 13, 32, 21
-            slithering_exploding_snake_12()
-            slithering_exploding_snake_23()
-            slithering_exploding_snake_31()
-            slithering_exploding_snake_13()
-            slithering_exploding_snake_32()
-            slithering_exploding_snake_21()
-            # Snakes 13, 12, 23, 21, 31, 32
-            slithering_exploding_snake_13()
-            slithering_exploding_snake_12()
-            slithering_exploding_snake_23()
-            slithering_exploding_snake_21()
-            slithering_exploding_snake_31()
-            slithering_exploding_snake_32()
-            # Snakes 13, 32, 21, 12, 23, 31
-            slithering_exploding_snake_13()
-            slithering_exploding_snake_32()
-            slithering_exploding_snake_21()
-            slithering_exploding_snake_12()
-            slithering_exploding_snake_23()
-            slithering_exploding_snake_31()
+        # Snakes 12, 13, 21, 23, 31, 32
+        slithering_exploding_snake_12()
+        slithering_exploding_snake_13()
+        slithering_exploding_snake_21()
+        slithering_exploding_snake_23()
+        slithering_exploding_snake_31()
+        slithering_exploding_snake_32()
+        # Snakes 12, 23, 31, 13, 32, 21
+        slithering_exploding_snake_12()
+        slithering_exploding_snake_23()
+        slithering_exploding_snake_31()
+        slithering_exploding_snake_13()
+        slithering_exploding_snake_32()
+        slithering_exploding_snake_21()
+        # Snakes 13, 12, 23, 21, 31, 32
+        slithering_exploding_snake_13()
+        slithering_exploding_snake_12()
+        slithering_exploding_snake_23()
+        slithering_exploding_snake_21()
+        slithering_exploding_snake_31()
+        slithering_exploding_snake_32()
+        # Snakes 13, 32, 21, 12, 23, 31
+        slithering_exploding_snake_13()
+        slithering_exploding_snake_32()
+        slithering_exploding_snake_21()
+        slithering_exploding_snake_12()
+        slithering_exploding_snake_23()
+        slithering_exploding_snake_31()
+        stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
-        print("\nExiting program.")
-        PYGLOW.all(0)
+        stop()
 
 
 def slithering_exploding_snake_12():
     """
     Lights up the LEDs on arms 1 and 2
     """
-    # Uncomment the following line for testing/debugging
-    # print("Snake 12 is slithering...")
+    LOGGER.debug("Snake 12 is slithering...")
+
     PYGLOW.led(1, 100)
     sleep(SLEEP_SPEED)
     PYGLOW.led(2, 100)
@@ -134,8 +160,7 @@ def slithering_exploding_snake_12():
     # Pulse
     pulse_snake_12_or_21()
     # Explode Snake 12
-    # Uncomment the following line for testing/debugging
-    # print("Snake 12 is exploding...")
+    LOGGER.debug("Snake 12 is exploding...")
     explode_snake_12_or_21()
     # Pause before next snake
     sleep(1)
@@ -145,8 +170,8 @@ def slithering_exploding_snake_13():
     """
     Lights up the LEDs on arms 1 and 3
     """
-    # Uncomment the following line for testing/debugging
-    # print("Snake 13 is slithering...")
+    LOGGER.debug("Snake 13 is slithering...")
+
     PYGLOW.led(1, 100)
     sleep(SLEEP_SPEED)
     PYGLOW.led(2, 100)
@@ -174,8 +199,7 @@ def slithering_exploding_snake_13():
     # Pulse
     pulse_snake_13_or_31()
     # Explode Snake 13
-    # Uncomment the following line for testing/debugging
-    # print("Snake 13 is exploding...")
+    LOGGER.debug("Snake 13 is exploding...")
     explode_snake_13_or_31()
     # Pause before next snake
     sleep(1)
@@ -185,8 +209,8 @@ def slithering_exploding_snake_21():
     """
     Lights up the LEDs on arms 2 and 1
     """
-    # Uncomment the following line for testing/debugging
-    # print("Snake 21 is slithering...")
+    LOGGER.debug("Snake 21 is slithering...")
+
     PYGLOW.led(7, 100)
     sleep(SLEEP_SPEED)
     PYGLOW.led(8, 100)
@@ -214,8 +238,7 @@ def slithering_exploding_snake_21():
     # Pulse
     pulse_snake_12_or_21()
     # Explode Snake 21
-    # Uncomment the following line for testing/debugging
-    # print("Snake 21 is exploding...")
+    LOGGER.debug("Snake 21 is exploding...")
     explode_snake_12_or_21()
     # Pause before next snake
     sleep(1)
@@ -225,8 +248,8 @@ def slithering_exploding_snake_23():
     """
     Lights up the LEDs on arms 2 and 3
     """
-    # Uncomment the following line for testing/debugging
-    # print("Snake 23 is slithering...")
+    LOGGER.debug("Snake 23 is slithering...")
+
     PYGLOW.led(7, 100)
     sleep(SLEEP_SPEED)
     PYGLOW.led(8, 100)
@@ -254,8 +277,7 @@ def slithering_exploding_snake_23():
     # Pulse
     pulse_snake_23_or_32()
     # Explode Snake 23
-    # Uncomment the following line for testing/debugging
-    # print("Snake 23 is exploding...")
+    LOGGER.debug("Snake 23 is exploding...")
     explode_snake_23_or_32()
     # Pause before next snake
     sleep(1)
@@ -265,8 +287,8 @@ def slithering_exploding_snake_31():
     """
     Lights up the LEDs on arms 3 and 1
     """
-    # Uncomment the following line for testing/debugging
-    # print("Snake 31 is slithering...")
+    LOGGER.debug("Snake 31 is slithering...")
+
     PYGLOW.led(13, 100)
     sleep(SLEEP_SPEED)
     PYGLOW.led(14, 100)
@@ -294,8 +316,7 @@ def slithering_exploding_snake_31():
     # Pulse
     pulse_snake_13_or_31()
     # Explode Snake 31
-    # Uncomment the following line for testing/debugging
-    # print("Snake 31 is exploding...")
+    LOGGER.debug("Snake 31 is exploding...")
     explode_snake_13_or_31()
     # Pause before next snake
     sleep(1)
@@ -305,8 +326,8 @@ def slithering_exploding_snake_32():
     """
     Lights up the LEDs on arms 3 and 2
     """
-    # Uncomment the following line for testing/debugging
-    # print("Snake 32 is slithering...")
+    LOGGER.debug("Snake 32 is slithering...")
+
     PYGLOW.led(13, 100)
     sleep(SLEEP_SPEED)
     PYGLOW.led(14, 100)
@@ -334,8 +355,7 @@ def slithering_exploding_snake_32():
     # Pulse
     pulse_snake_23_or_32()
     # Explode Snake 32
-    # Uncomment the following line for testing/debugging
-    # print("Snake 32 is slithering...")
+    LOGGER.debug("Snake 32 is slithering...")
     explode_snake_23_or_32()
     # Pause before next snake
     sleep(1)
@@ -345,17 +365,13 @@ def pulse_snake_12_or_21():
     """
     Pulses the LEDs on arms 1 and 2
     """
+    LOGGER.debug("Snake is pulsing...")
 
-    pulse_speed = 175
-
-    # Uncomment the following line for testing/debugging
-    # print("Snake is pulsing.")
-    while pulse_speed < 225:
-        # Uncomment the following line for testing/debugging
-        # print("Pulse speed is: ", pulse_speed)
-        PYGLOW.led(SNAKE_12_LEDS, 100, speed=pulse_speed, pulse=True)
+    # Start pulse speed at 175, end at 225, increment by 1
+    for i in range(175, 226, 1):
+        LOGGER.debug("Pulse speed is: %s", i)
+        PYGLOW.led(SNAKE_12_LEDS, 100, speed=i, pulse=True)
         sleep(0)
-        pulse_speed += 1
     PYGLOW.led(SNAKE_12_LEDS, 100)
     sleep(1)
 
@@ -364,17 +380,13 @@ def pulse_snake_13_or_31():
     """
     Pulses the LEDs on arms 1 and 3
     """
+    LOGGER.debug("Snake is pulsing...")
 
-    pulse_speed = 175
-
-    # Uncomment the following line for testing/debugging
-    # print ("Snake is pulsing.")
-    while pulse_speed < 225:
-        # Uncomment the following line for testing/debugging
-        # print("Pulse speed is: ", pulse_speed)
-        PYGLOW.led(SNAKE_13_LEDS, 100, speed=pulse_speed, pulse=True)
-        sleep(0) 
-        pulse_speed += 1
+    # Start pulse speed at 175, end at 225, increment by 1
+    for i in range(175, 226, 1):
+        LOGGER.debug("Pulse speed is: %s", i)
+        PYGLOW.led(SNAKE_13_LEDS, 100, speed=i, pulse=True)
+        sleep(0)
     PYGLOW.led(SNAKE_13_LEDS, 100)
     sleep(1)
 
@@ -383,17 +395,13 @@ def pulse_snake_23_or_32():
     """
     Pulses the LEDs on arms 2 and 3
     """
+    LOGGER.debug("Snake is pulsing...")
 
-    pulse_speed = 175
-
-    # Uncomment the following line for testing/debugging
-    # print("Snake is pulsing.")
-    while pulse_speed < 225:
-        # Uncomment the following line for testing/debugging
-        # print("Pulse speed is: ", pulse_speed)
-        PYGLOW.led(SNAKE_23_LEDS, 100, speed=pulse_speed, pulse=True)
+    # Start pulse speed at 175, end at 225, increment by 1
+    for i in range(175, 226, 1):
+        LOGGER.debug("Pulse speed is: %s", i)
+        PYGLOW.led(SNAKE_23_LEDS, 100, speed=i, pulse=True)
         sleep(0)
-        pulse_speed += 1
     PYGLOW.led(SNAKE_23_LEDS, 100)
     sleep(1)
 
@@ -498,6 +506,33 @@ def explode_snake_23_or_32():
     sleep(explode_speed)
     PYGLOW.led(7, 0)
     sleep(explode_speed)
+
+
+def delete_empty_logs():
+    """
+    Delete empty log fles
+
+    Log files will always be created. But they will be empty if the
+    log level is set to anything higher than DEBUG, since only DEBUG
+    messages are logged. If the log files are empty, they will be
+    deleted.
+    """
+
+    logs = [LOG, 'print_piglow_header.log']
+
+    for log in logs:
+        if os.stat(log).st_size == 0:
+            os.remove(log)
+
+
+def stop():
+    """
+    Print exit message and turn off the PiGlow
+    """
+    LOGGER.debug("END")
+    delete_empty_logs()
+    print("\nExiting program.")
+    PYGLOW.all(0)
 
 
 if __name__ == '__main__':
