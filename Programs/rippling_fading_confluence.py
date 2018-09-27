@@ -22,10 +22,16 @@ Functions:
 - fading_confluence_1: Fades the lights on arms 2 and 3, then arm 1
 - fading_confluence_2: Fades the lights on arms 1 and 3, then arm 2
 - fading_confluence_3: Fades the lights on arms 1 and 2, then arm 3
+- delete_empty_logs: Deletes empty log fles
+- stop: Print exit message and turn off the PiGlow
 
 ....................
 
-Requirements: PyGlow.py
+Requirements:
+    PyGlow.py (many thanks to benleb for this program)
+    print_piglow_header.py
+
+You will have these files if you downloaded the entire repository.
 
 ....................
 
@@ -37,20 +43,29 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import os
+import logging
 from time import sleep
 from PyGlow import PyGlow
-
-########################################################################
-#                           Variables                                  #
-########################################################################
-
-PYGLOW = PyGlow()
+from print_piglow_header import print_piglow_header
 
 ########################################################################
 #                           Initialize                                 #
 ########################################################################
 
+PYGLOW = PyGlow()
 PYGLOW.all(0)
+
+# Logging
+LOG = 'ripping_fading_confluence.log'
+LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                              datefmt='%m/%d/%y %I:%M:%S %p:')
+FILE_HANDLER = logging.FileHandler(LOG, 'w')
+FILE_HANDLER.setFormatter(FORMATTER)
+LOGGER.addHandler(FILE_HANDLER)
 
 ########################################################################
 #                            Functions                                 #
@@ -61,26 +76,28 @@ def main():
     """
     The main function
     """
-    print("Press Ctrl-C to stop the program.")
+    LOGGER.debug("START")
+
+    print_piglow_header()
+
+    # Force white text after selecting random colored header
+    print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
-        while True:
-            confluence_slow()
-            confluence_fast()
+        confluence_slow()
+        confluence_fast()
+        stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
-        print("\nExiting program.")
-        PYGLOW.all(0)
+        stop()
 
 
 def confluence_2_and_3_into_1(sleep_speed):
     """
     Lights up arms 2 and 3, then arm 1
     """
-    # Uncomment the following line for testing/debugging
-    # print("Confluence 2 and 3 into 1...")
+    LOGGER.debug("Confluence 2 and 3 into 1...")
 
     sleep_speed = sleep_speed
-    counter = 10
 
     # Arm 2 and 3, Red
     PYGLOW.led(7, 120)
@@ -125,9 +142,9 @@ def confluence_2_and_3_into_1(sleep_speed):
     PYGLOW.led(1, 120)
     sleep(sleep_speed)
     # Ripple
-    while counter > 0:
+    for i in range(1, 11, 1):
+        LOGGER.debug("Ripple count: %s", i)
         rippling_confluence_1(sleep_speed)
-        counter -= 1
     # Fade
     fading_confluence_1()
 
@@ -136,11 +153,9 @@ def confluence_1_and_3_into_2(sleep_speed):
     """
     Lights up arms 1 and 3, then arm 2
     """
-    # Uncomment the following line for testing/debugging
-    # print("Confluence 1 and 3 into 2...")
+    LOGGER.debug("Confluence 1 and 3 into 2...")
 
     sleep_speed = sleep_speed
-    counter = 10
 
     # Arm 1 and 3, Red
     PYGLOW.led(1, 120)
@@ -184,9 +199,9 @@ def confluence_1_and_3_into_2(sleep_speed):
     # Arm 2, Red
     PYGLOW.led(7, 120)
     sleep(sleep_speed)
-    while counter > 0:
+    for i in range(1, 11, 1):
+        LOGGER.debug("Ripple count: %s", i)
         rippling_confluence_2(sleep_speed)
-        counter -= 1
     fading_confluence_2()
     sleep(1)
 
@@ -195,11 +210,9 @@ def confluence_1_and_2_into_3(sleep_speed):
     """
     Lights up arms 1 and 2, then arm 3
     """
-    # Uncomment the following line for testing/debugging
-    # print("Confluence 1 and 2 into 3...")
+    LOGGER.debug("Confluence 1 and 2 into 3...")
 
     sleep_speed = sleep_speed
-    counter = 10
 
     # Arm 1 and 2, Red
     PYGLOW.led(1, 120)
@@ -243,9 +256,9 @@ def confluence_1_and_2_into_3(sleep_speed):
     PYGLOW.led(13, 120)
     sleep(sleep_speed)
     # Ripple
-    while counter > 0:
+    for i in range(1, 11, 1):
+        LOGGER.debug("Ripple count: %s", i)
         rippling_confluence_3(sleep_speed)
-        counter -= 1
     # Fade
     fading_confluence_3()
     sleep(1)
@@ -255,14 +268,16 @@ def rippling_confluence_1(sleep_speed):
     """
     Ripples the lights on arms 2 and 3, then arm 1
     """
-    # Uncomment the following line for testing/debugging
-    # print("ripple speed is:", ripple_speed)
+    LOGGER.debug("Rippling Confluence 1...")
 
     ripple_speed = 0.05
+
     if sleep_speed < ripple_speed:
         ripple_speed = sleep_speed
     else:
         ripple_speed = 0.05
+
+    LOGGER.debug("ripple speed is: %s", ripple_speed)
 
     # Ripple
     # Arm 2 and 3, Red
@@ -344,14 +359,16 @@ def rippling_confluence_2(sleep_speed):
     """
     Ripples the lights on arms 1 and 3, then arm 2
     """
-    # Uncomment the following line for testing/debugging
-    # print("ripple speed is:", ripple_speed)
+    LOGGER.debug("Rippling Confluence 1...")
 
     ripple_speed = 0.05
+
     if sleep_speed < ripple_speed:
         ripple_speed = sleep_speed
     else:
         ripple_speed = 0.05
+
+    LOGGER.debug("ripple speed is: %s", ripple_speed)
 
     # Ripple
     # Arm 1 and 3, Red
@@ -432,14 +449,16 @@ def rippling_confluence_3(sleep_speed):
     """
     Ripples the lights on arms 1 and 2, then arm 3
     """
-    # Uncomment the following line for testing/debugging
-    # print("ripple speed is:", ripple_speed)
+    LOGGER.debug("Rippling Confluence 1...")
 
     ripple_speed = 0.05
+
     if sleep_speed < ripple_speed:
         ripple_speed = sleep_speed
     else:
         ripple_speed = 0.05
+
+    LOGGER.debug("ripple speed is: %s", ripple_speed)
 
     # Ripple
     # Arm 1 and 2, Red
@@ -1702,15 +1721,12 @@ def confluence_slow():
     """
     Gradually increases the speed at which the LEDs light up
     """
-    # Uncomment the following lines for testing/debugging
-    # print("Confluence")
-    # print("Increasing speed...")
+    LOGGER.debug("Confluence slow")
 
     sleep_speed = 0.25
 
     while sleep_speed > 0.05:
-        # Uncomment the following line for testing/debugging
-        # print("The speed is now: ", sleep_speed)
+        LOGGER.debug("The speed is now: %s", sleep_speed)
         confluence_2_and_3_into_1(sleep_speed)
         confluence_1_and_3_into_2(sleep_speed)
         confluence_1_and_2_into_3(sleep_speed)
@@ -1722,19 +1738,44 @@ def confluence_fast():
     """
     Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
     """
-    # Uncomment the following line for testing/debugging
-    # print("Going fast...")
+    LOGGER.debug("Going fast...")
 
     sleep_speed = 0.05
 
     while sleep_speed > 0.01:
-        # Uncomment the following line for testing/debugging
-        # print("sleep_speed = ", sleep_speed)
+        LOGGER.debug("sleep_speed = %s", sleep_speed)
         confluence_2_and_3_into_1(sleep_speed)
         confluence_1_and_3_into_2(sleep_speed)
         confluence_1_and_2_into_3(sleep_speed)
         # increse speed
         sleep_speed -= 0.0025
+
+
+def delete_empty_logs():
+    """
+    Delete empty log fles
+
+    Log files will always be created. But they will be empty if the
+    log level is set to anything higher than DEBUG, since only DEBUG
+    messages are logged. If the log files are empty, they will be
+    deleted.
+    """
+
+    logs = [LOG, 'print_piglow_header.log']
+
+    for log in logs:
+        if os.stat(log).st_size == 0:
+            os.remove(log)
+
+
+def stop():
+    """
+    Print exit message and turn off the PiGlow
+    """
+    LOGGER.debug("END")
+    delete_empty_logs()
+    print("\nExiting program.")
+    PYGLOW.all(0)
 
 
 if __name__ == '__main__':
