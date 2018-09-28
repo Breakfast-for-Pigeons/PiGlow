@@ -24,9 +24,15 @@ Functions:
 - explode_millipede_12_or_21: Explodes millipede 12 or 21
 - explode_millipede_13_or_31: Explodes millipede 13 or 31
 - explode_millipede_23_or_32: Explodes millipede 23 or 32
+- delete_empty_logs: Deletes empty log fles
+- stop: Print exit message and turn off the PiGlow
 ....................
 
-Requirements: PyGlow.py
+Requirements:
+    PyGlow.py (many thanks to benleb for this program)
+    print_piglow_header.py
+
+You will have these files if you downloaded the entire repository.
 
 ....................
 
@@ -38,22 +44,32 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-from time import sleep
+import os
 import random
+import logging
+from time import sleep
 from PyGlow import PyGlow
-
-########################################################################
-#                           Variables                                  #
-########################################################################
-
-PYGLOW = PyGlow()
-SLEEP_SPEED = 0.10
+from print_piglow_header import print_piglow_header
 
 ########################################################################
 #                           Initialize                                 #
 ########################################################################
 
+PYGLOW = PyGlow()
 PYGLOW.all(0)
+
+SLEEP_SPEED = 0.10
+
+# Logging
+LOG = 'explodes_millipedes.log'
+LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
+LOGGER = logging.getLogger(__name__)
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                              datefmt='%m/%d/%y %I:%M:%S %p:')
+FILE_HANDLER = logging.FileHandler(LOG, 'w')
+FILE_HANDLER.setFormatter(FORMATTER)
+LOGGER.addHandler(FILE_HANDLER)
 
 ########################################################################
 #                            Functions                                 #
@@ -64,38 +80,39 @@ def main():
     """
     The main function
     """
+    LOGGER.debug("START")
 
     millipede_ripple_speeds = [0.1, 0.075, 0.05, 0.025]
 
     millipedes = [millipede_12, millipede_13, millipede_21, millipede_23,
                   millipede_31, millipede_32]
 
-    print("Press Ctrl-C to stop the program.")
+    print_piglow_header()
+
+    # Force white text after selecting random colored header
+    print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
-        while True:
-            # Random Slow millipede
-            random.choice(millipedes)(0.1)
-            # Random Slow/Medium millipede
-            random.choice(millipedes)(0.075)
-            # Random Medium millipede
-            random.choice(millipedes)(0.05)
-            # Random Fast millipede
-            random.choice(millipedes)(0.025)
-            # Random millipede, Random Speed
-            random.choice(millipedes)(random.choice(millipede_ripple_speeds))
+        # Random Slow millipede
+        random.choice(millipedes)(0.1)
+        # Random Slow/Medium millipede
+        random.choice(millipedes)(0.075)
+        # Random Medium millipede
+        random.choice(millipedes)(0.05)
+        # Random Fast millipede
+        random.choice(millipedes)(0.025)
+        # Random millipede, Random Speed
+        random.choice(millipedes)(random.choice(millipede_ripple_speeds))
+        stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
-        print("\nExiting program.")
-        PYGLOW.all(0)
+        stop()
 
 
 def millipede_12(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 1 and 2
     """
-    # Uncomment the following print lines for testing/debugging
-    # print("Centipede 12")
-    # print("Centipede speed is: ", ripple_speed)
+    LOGGER.debug("Millipede 12")
 
     ripple_speed = ripple_speed
 
@@ -460,13 +477,10 @@ def millipede_13(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 1 and 3
     """
-    # Uncomment the following print lines for testing/debugging
-    # print("Centipede 13")
-    # print("Centipede speed is: ", ripple_speed)
+    LOGGER.debug("Millipede 13")
 
     ripple_speed = ripple_speed
 
-    # Turn on millipede 13
     # Turn on Head
     PYGLOW.led(1, 120)
     sleep(SLEEP_SPEED)
@@ -839,13 +853,10 @@ def millipede_21(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 2 and 1
     """
-    # Uncomment the following print lines for testing/debugging
-    # print("Centipede 21")
-    # print("Centipede speed is: ", ripple_speed)
+    LOGGER.debug("Millipede 21")
 
     ripple_speed = ripple_speed
 
-    # Turn on millipede 21
     # Turn on Head
     PYGLOW.led(7, 120)
     sleep(SLEEP_SPEED)
@@ -1218,13 +1229,10 @@ def millipede_23(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 2 and 3
     """
-    # Uncomment the following print lines for testing/debugging
-    # print("Centipede 23")
-    # print("Centipede speed is: ", ripple_speed)
+    LOGGER.debug("Millipede 23")
 
     ripple_speed = ripple_speed
 
-    # Light up millipede 23
     # Turn on Head
     PYGLOW.led(7, 120)
     sleep(SLEEP_SPEED)
@@ -1597,13 +1605,10 @@ def millipede_31(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 3 and 1
     """
-    # Uncomment the following print lines for testing/debugging
-    # print("Centipede 31")
-    # print("Centipede speed is: ", ripple_speed)
+    LOGGER.debug("Millipede 31")
 
     ripple_speed = ripple_speed
 
-    # Light up millipede 31
     # Turn on Head
     PYGLOW.led(13, 120)
     sleep(SLEEP_SPEED)
@@ -1976,13 +1981,10 @@ def millipede_32(ripple_speed):
     """
     Lights up and "ripples" the LEDs on arms 3 and 2
     """
-    # Uncomment the following print lines for testing/debugging
-    # print("Centipede 32")
-    # print("Centipede speed is: ", ripple_speed)
+    LOGGER.debug("Millipede 32")
 
     ripple_speed = ripple_speed
 
-    # Light up Centipede 32
     # Turn on Head
     PYGLOW.led(13, 120)
     sleep(SLEEP_SPEED)
@@ -2357,7 +2359,6 @@ def pulse_millipede_12_or_21():
     """
 
     ripple_speed = 0.15
-    counter = 10
 
     while ripple_speed > 0.02:
         # Ripple Head and Body 1 - 11
@@ -2401,7 +2402,9 @@ def pulse_millipede_12_or_21():
         ripple_speed -= 0.01
     # Reset ripple_speed
     ripple_speed = 0.02
-    while counter > 0:
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("Ripple speed is: %s", i)
         # Ripple Head and Body 1 - 11
         PYGLOW.led(6, 60)
         PYGLOW.led(18, 60)
@@ -2439,8 +2442,7 @@ def pulse_millipede_12_or_21():
         PYGLOW.led(1, 120)
         PYGLOW.led(7, 120)
         sleep(ripple_speed)
-        # Decrement counter
-        counter -= 1
+    # Sleep 1 second before exploding
     sleep(1)
 
 
@@ -2450,7 +2452,6 @@ def pulse_millipede_13_or_31():
     """
 
     ripple_speed = 0.15
-    counter = 10
 
     while ripple_speed > 0.02:
         # Ripple Head and Body 1 - 11
@@ -2494,7 +2495,9 @@ def pulse_millipede_13_or_31():
         ripple_speed -= 0.01
     # Reset ripple_speed
     ripple_speed = 0.02
-    while counter > 1:
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("Ripple speed is: %s", i)
         # Ripple Head and Body 1 - 11
         PYGLOW.led(18, 60)
         PYGLOW.led(12, 60)
@@ -2532,8 +2535,6 @@ def pulse_millipede_13_or_31():
         PYGLOW.led(13, 120)
         PYGLOW.led(1, 120)
         sleep(ripple_speed)
-        # Decrement counter
-        counter -= 1
     # Sleep 1 second before exploding
     sleep(1)
 
@@ -2544,7 +2545,6 @@ def pulse_millipede_23_or_32():
     """
 
     ripple_speed = 0.15
-    counter = 10
 
     while ripple_speed > 0.02:
         # Ripple Head and Body 1 - 11
@@ -2588,7 +2588,9 @@ def pulse_millipede_23_or_32():
         ripple_speed -= 0.01
     # Reset ripple_speed
     ripple_speed = 0.02
-    while counter > 1:
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("Ripple speed is: %s", i)
         # Ripple Head and Body 1 - 11
         PYGLOW.led(12, 60)
         PYGLOW.led(6, 60)
@@ -2626,8 +2628,6 @@ def pulse_millipede_23_or_32():
         PYGLOW.led(13, 120)
         PYGLOW.led(7, 120)
         sleep(ripple_speed)
-        # Decrement counter
-        counter -= 1
     # Sleep 1 second before exploding
     sleep(1)
 
@@ -2731,6 +2731,33 @@ def explode_millipede_23_or_32():
     sleep(explode_speed)
     PYGLOW.led(7, 0)
     sleep(explode_speed)
+
+
+def delete_empty_logs():
+    """
+    Delete empty log fles
+
+    Log files will always be created. But they will be empty if the
+    log level is set to anything higher than DEBUG, since only DEBUG
+    messages are logged. If the log files are empty, they will be
+    deleted.
+    """
+
+    logs = [LOG, 'print_piglow_header.log']
+
+    for log in logs:
+        if os.stat(log).st_size == 0:
+            os.remove(log)
+
+
+def stop():
+    """
+    Print exit message and turn off the PiGlow
+    """
+    LOGGER.debug("END")
+    delete_empty_logs()
+    print("\nExiting program.")
+    PYGLOW.all(0)
 
 
 if __name__ == '__main__':
