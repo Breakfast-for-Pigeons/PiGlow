@@ -20,7 +20,7 @@ Functions:
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
     print_piglow_header.py
-    
+
 You will have these files if you downloaded the entire repository.
 
 ....................
@@ -834,13 +834,10 @@ def run_10_times():
     """
     LOGGER.debug("Running 10 times...")
 
-    counter = 10
-
-    while counter > 0:
-        LOGGER.debug("Running number: %s", counter)
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("Running number %s", i)
         fading_spiral_arms()
-        # Decrease counter
-        counter -= 1
 
 
 def delete_empty_logs():
