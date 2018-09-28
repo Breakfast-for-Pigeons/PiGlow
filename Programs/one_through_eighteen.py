@@ -11,6 +11,7 @@ Functions:
 
 - one_through_eighteen: Lights up LEDs one at a time
 - run_10_times: Cycles throught the LEDs 10 times
+- delete_empty_logs: Deletes empty log fles
 - stop: Print exit message and turn off the PiGlow
 
 ....................
@@ -18,7 +19,7 @@ Functions:
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
     print_piglow_header.py
-    
+
 You will have these files if you downloaded the entire repository.
 
 ....................
@@ -45,10 +46,10 @@ PYGLOW = PyGlow()
 PYGLOW.all(0)
 
 # Logging
-LOG = 'Logs/01_one_through_eighteen.log'
+LOG = 'one_through_eighteen.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.INFO)    # Nothing will log unless changed to DEBUG
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
 FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
                               datefmt='%m/%d/%y %I:%M:%S %p:')
 FILE_HANDLER = logging.FileHandler(LOG, 'w')
@@ -64,70 +65,59 @@ def main():
     """
     The main function
     """
-
     LOGGER.debug("START")
 
     print_piglow_header()
+
     # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
     try:
-        one_through_eighteen()
+        increase_speed()
         run_10_times()
         stop()
     except KeyboardInterrupt:
         stop()
 
 
-def one_through_eighteen():
+def increase_speed():
     """
     Lights up and turns off LEDs 1 through 18 one at a time.
     Gradually increases the speed at which the LEDs light up
     """
+    LOGGER.debug("Lighting up LEDs 1 through 18...")
 
-    LOGGER.debug("Increasing speed...")
-
-    led_number = 1
     sleep_speed = 0.25
 
     while sleep_speed > 0.05:
 
         LOGGER.debug("The speed is now %s", sleep_speed)
 
-        while led_number < 19:
-            PYGLOW.led(led_number, 100)    # light up LED
+        # Start led number at 1, end at 18, increment by 1
+        for i in range(1, 19, 1):
+            PYGLOW.led(i, 100)    # light up LED
             sleep(sleep_speed)
-            PYGLOW.led(led_number, 0)      # turn off LED
+            PYGLOW.led(i, 0)      # turn off LED
             sleep(sleep_speed)
-            led_number += 1
-        led_number = 1                     # Reset LED number to 1
         sleep_speed -= 0.05                # Increase speed
 
 
 def run_10_times():
     """ Run 10 times
 
-    Once the program has reached the max set speed, it will cycle
-    throught the LEDs 10 times.
+    Cycles through all the LEDs 10 times at a speed of 0.05.
 
     """
-
     LOGGER.debug("Running 10 times...")
 
-    counter = 10
-
-    while counter > 0:
-        # Set (or Reset) led_number to 1
-        led_number = 1
-
-        LOGGER.debug("This is run number %s", counter)
-
-        while led_number < 19:
-            PYGLOW.led(led_number, 100)    # light up LED
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("counter is: %s", i)
+        # Start led number at 1, end at 18, increment by 1
+        for j in range(1, 19, 1):
+            PYGLOW.led(j, 100)    # light up LED
             sleep(0.05)
-            PYGLOW.led(led_number, 0)      # turn off LED
+            PYGLOW.led(j, 0)      # turn off LED
             sleep(0.05)
-            led_number += 1                # increment LED number
-        counter -= 1                       # decrease counter
 
 
 def delete_empty_logs():
@@ -140,7 +130,7 @@ def delete_empty_logs():
     deleted.
     """
 
-    logs = [LOG, 'Logs/print_piglow_header.log']
+    logs = [LOG, 'print_piglow_header.log']
 
     for log in logs:
         if os.stat(log).st_size == 0:
