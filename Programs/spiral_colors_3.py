@@ -31,6 +31,8 @@ Functions:
 
 ....................
 
+Requirements: PyGlow.py
+
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
     print_piglow_header.py
@@ -59,6 +61,9 @@ from print_piglow_header import print_piglow_header
 
 PYGLOW = PyGlow()
 PYGLOW.all(0)
+
+# Feel free to modify the brightness setting below
+LED_BRIGHTNESS = 100
 
 # Logging
 LOG = 'spiral_colors_3.log'
@@ -106,18 +111,16 @@ def red_leds_on(sleep_speed):
     """
     LOGGER.debug("Lighting up red LEDs...")
 
-    # Feel free to modify the brightness setting below
-    led_brightness = 100
     sleep_speed = sleep_speed
 
     # Arm 1, Red
-    PYGLOW.led(1, led_brightness)
+    PYGLOW.led(1, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 2, Red
-    PYGLOW.led(7, led_brightness)
+    PYGLOW.led(7, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 3, Red
-    PYGLOW.led(13, led_brightness)
+    PYGLOW.led(13, LED_BRIGHTNESS)
     sleep(sleep_speed)
 
 
@@ -152,18 +155,16 @@ def orange_leds_on(sleep_speed):
     """
     LOGGER.debug("Lighting up orange LEDs...")
 
-    # Feel free to modify the brightness setting below
-    led_brightness = 100
     sleep_speed = sleep_speed
 
     # Arm 1, Orange
-    PYGLOW.led(2, led_brightness)
+    PYGLOW.led(2, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 2, Orange
-    PYGLOW.led(8, led_brightness)
+    PYGLOW.led(8, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 3, Orange
-    PYGLOW.led(14, led_brightness)
+    PYGLOW.led(14, LED_BRIGHTNESS)
     sleep(sleep_speed)
 
 
@@ -198,18 +199,16 @@ def yellow_leds_on(sleep_speed):
     """
     LOGGER.debug("Lighting up yellow LEDs...")
 
-    # Feel free to modify the brightness setting below
-    led_brightness = 100
     sleep_speed = sleep_speed
 
     # Arm 1, Yellow
-    PYGLOW.led(3, led_brightness)
+    PYGLOW.led(3, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 2, Yellow
-    PYGLOW.led(9, led_brightness)
+    PYGLOW.led(9, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 3, Yellow
-    PYGLOW.led(15, led_brightness)
+    PYGLOW.led(15, LED_BRIGHTNESS)
     sleep(sleep_speed)
 
 
@@ -244,18 +243,16 @@ def green_leds_on(sleep_speed):
     """
     LOGGER.debug("Lighting up green LEDs...")
 
-    # Feel free to modify the brightness setting below
-    led_brightness = 100
     sleep_speed = sleep_speed
 
     # Arm 1, Green
-    PYGLOW.led(4, led_brightness)
+    PYGLOW.led(4, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 2, Green
-    PYGLOW.led(10, led_brightness)
+    PYGLOW.led(10, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 3, Green
-    PYGLOW.led(16, led_brightness)
+    PYGLOW.led(16, LED_BRIGHTNESS)
     sleep(sleep_speed)
 
 
@@ -290,18 +287,16 @@ def blue_leds_on(sleep_speed):
     """
     LOGGER.debug("Lighting up blue LEDs...")
 
-    # Feel free to modify the brightness setting below
-    led_brightness = 100
     sleep_speed = sleep_speed
 
     # Arm 1, Blue
-    PYGLOW.led(5, led_brightness)
+    PYGLOW.led(5, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 2, Blue
-    PYGLOW.led(11, led_brightness)
+    PYGLOW.led(11, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 3, Blue
-    PYGLOW.led(17, led_brightness)
+    PYGLOW.led(17, LED_BRIGHTNESS)
     sleep(sleep_speed)
 
 
@@ -336,18 +331,16 @@ def white_leds_on(sleep_speed):
     """
     LOGGER.debug("Lighting up white LEDs...")
 
-    # Feel free to modify the brightness setting below
-    led_brightness = 100
     sleep_speed = sleep_speed
 
     # Arm 1, White
-    PYGLOW.led(6, led_brightness)
+    PYGLOW.led(6, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 2, White
-    PYGLOW.led(12, led_brightness)
+    PYGLOW.led(12, LED_BRIGHTNESS)
     sleep(sleep_speed)
     # Arm 3, White
-    PYGLOW.led(18, led_brightness)
+    PYGLOW.led(18, LED_BRIGHTNESS)
     sleep(sleep_speed)
 
 
@@ -436,10 +429,10 @@ def go_faster():
     LOGGER.debug("Going faster...")
 
     sleep_speed = 0.01
-    counter = 20
 
-    while counter > 0:
-        LOGGER.debug("counter = %s", counter)
+    # Start counter at 1, end at 20, increment by 1
+    for i in range(1, 21, 1):
+        LOGGER.debug("counter = %s", i)
         # Turn on LEDs
         red_leds_on(sleep_speed)
         orange_leds_on(sleep_speed)
@@ -454,8 +447,6 @@ def go_faster():
         green_leds_off(sleep_speed)
         blue_leds_off(sleep_speed)
         white_leds_off(sleep_speed)
-        # decrease counter
-        counter -= 1
 
 
 def go_really_fast():
@@ -465,10 +456,10 @@ def go_really_fast():
     LOGGER.debug("Going really fast...")
 
     sleep_speed = 0
-    counter = 100
 
-    while counter > 0:
-        LOGGER.debug("counter = %s", counter)
+    # Start counter at 1, end at 100, increment by 1
+    for i in range(1, 101, 1):
+        LOGGER.debug("counter = %s", i)
         # Turn on LEDs
         red_leds_on(sleep_speed)
         orange_leds_on(sleep_speed)
@@ -483,8 +474,6 @@ def go_really_fast():
         green_leds_off(sleep_speed)
         blue_leds_off(sleep_speed)
         white_leds_off(sleep_speed)
-        # decrease counter
-        counter -= 1
 
 
 def delete_empty_logs():
