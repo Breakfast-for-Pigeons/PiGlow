@@ -73,15 +73,13 @@ def main():
     # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
 
-    counter = 1
-
     try:
-        while counter < 4:
-            LOGGER.debug("counter = %s", counter)
+        # Start counter at 1, end at 3, increment by 1
+        for i in range(1, 4, 1):
+            LOGGER.debug("counter = %s", i)
             snake_12()
             snake_23()
             snake_13()
-            counter += 1
         stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
