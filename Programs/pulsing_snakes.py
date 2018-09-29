@@ -111,14 +111,12 @@ def pulsing_snake_12():
     # slithering, the order doesn't matter)
     snake_12_leds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18]
 
-    pulse_speed = 200
-
-    while pulse_speed > 150:
-        PYGLOW.set_leds(snake_12_leds, 100, speed=pulse_speed,
+    # Start pulse speed at 200, end at 150, decrement by 1
+    for i in range(200, 149, -1):
+        PYGLOW.set_leds(snake_12_leds, 100, speed=i,
                         pulse=True)
         sleep(0)
         PYGLOW.update_leds()
-        pulse_speed -= 1
     PYGLOW.set_leds(snake_12_leds, 0)
     PYGLOW.update_leds()
     sleep(1)
@@ -134,14 +132,12 @@ def pulsing_snake_13():
     # slithering, the order doesn't matter)
     snake_13_leds = [1, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17, 18]
 
-    pulse_speed = 200
-
-    while pulse_speed > 150:
-        PYGLOW.set_leds(snake_13_leds, 100, speed=pulse_speed,
+    # Start pulse speed at 200, end at 150, decrement by 1
+    for i in range(200, 149, -1):
+        PYGLOW.set_leds(snake_13_leds, 100, speed=i,
                         pulse=True)
         sleep(0)
         PYGLOW.update_leds()
-        pulse_speed -= 1
     PYGLOW.set_leds(snake_13_leds, 0)
     PYGLOW.update_leds()
     sleep(1)
@@ -157,14 +153,12 @@ def pulsing_snake_23():
     # slithering, the order doesn't matter)
     snake_23_leds = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
 
-    pulse_speed = 200
-
-    while pulse_speed > 150:
-        PYGLOW.set_leds(snake_23_leds, 100, speed=pulse_speed,
+    # Start pulse speed at 200, end at 150, decrement by 1
+    for i in range(200, 149, -1):
+        PYGLOW.set_leds(snake_23_leds, 100, speed=i,
                         pulse=True)
         sleep(0)
         PYGLOW.update_leds()
-        pulse_speed -= 1
     PYGLOW.set_leds(snake_23_leds, 0)
     PYGLOW.update_leds()
     sleep(1)
