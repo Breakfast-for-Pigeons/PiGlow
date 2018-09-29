@@ -285,15 +285,13 @@ def go_faster():
     LOGGER.debug("Going faster...")
 
     sleep_speed = 0.01
-    counter = 10
 
-    while counter > 0:
-        LOGGER.debug("The speed is now: %s", sleep_speed)
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("counter = %s", i)
         light_fuse_1(sleep_speed)
         light_fuse_2(sleep_speed)
         light_fuse_3(sleep_speed)
-        # decrease counter
-        counter -= 1
 
 
 def delete_empty_logs():
