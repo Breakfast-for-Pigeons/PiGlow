@@ -147,13 +147,11 @@ def go_faster():
     LOGGER.debug("Going faster...")
 
     sleep_speed = 0.01
-    counter = 20
 
-    while counter > 0:
-        LOGGER.debug("counter = %s", counter)
+    # Start counter at 1, end at 20, increment by 1
+    for i in range(1, 21, 1):
+        LOGGER.debug("counter = %s", i)
         roy_g_biv(sleep_speed)
-        # decrease counter
-        counter -= 1
 
 
 def go_really_fast():
@@ -163,13 +161,11 @@ def go_really_fast():
     LOGGER.debug("Going really fast...")
 
     sleep_speed = 0
-    counter = 100
 
-    while counter > 0:
-        LOGGER.debug("counter = %s", counter)
+    # Start counter at 1, end at 100, increment by 1
+    for i in range(1, 101, 1):
+        LOGGER.debug("counter = %s", i)
         roy_g_biv(sleep_speed)
-        # decrease counter
-        counter -= 1
     sleep(2)
 
 
