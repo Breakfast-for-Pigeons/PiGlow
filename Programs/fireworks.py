@@ -70,13 +70,11 @@ def main():
     # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
 
-    counter = 1
-
     try:
-        while counter < 11:
-            LOGGER.debug("Fireworks #%s", counter)
+        # Start counter at 1, end at 10, increment by 1
+        for i in range(1, 11, 1):
+            LOGGER.debug("Fireworks #%s", i)
             fireworks()
-            counter += 1
         stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
