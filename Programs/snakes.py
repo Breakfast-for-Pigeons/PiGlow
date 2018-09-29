@@ -48,7 +48,7 @@ PYGLOW.all(0)
 LOG = 'snakes.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
+LOGGER.setLevel(logging.DEBUG)    # Nothing will log unless changed to DEBUG
 FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
                               datefmt='%m/%d/%y %I:%M:%S %p:')
 FILE_HANDLER = logging.FileHandler(LOG, 'w')
@@ -71,15 +71,13 @@ def main():
     # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
 
-    counter = 1
-
     try:
-        while counter < 4:
-            LOGGER.debug("counter = %s", counter)
+        # Start counter at 1, end at 3, increment by 1
+        for i in range(1, 4, 1):
+            LOGGER.debug("counter = %s", i)
             snake_12()
             snake_23()
             snake_13()
-            counter += 1
         stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
@@ -101,7 +99,7 @@ def snake_12():
     sleep(sleep_speed)
     PYGLOW.set_leds(snake_12_leds, 0)
     PYGLOW.update_leds()
-    sleep(sleep_speed)
+    sleep(1)
 
 
 def snake_13():
@@ -120,7 +118,7 @@ def snake_13():
     sleep(sleep_speed)
     PYGLOW.set_leds(snake_13_leds, 0)
     PYGLOW.update_leds()
-    sleep(sleep_speed)
+    sleep(1)
 
 
 def snake_23():
@@ -139,7 +137,7 @@ def snake_23():
     sleep(sleep_speed)
     PYGLOW.set_leds(snake_23_leds, 0)
     PYGLOW.update_leds()
-    sleep(sleep_speed)
+    sleep(1)
 
 
 def delete_empty_logs():
