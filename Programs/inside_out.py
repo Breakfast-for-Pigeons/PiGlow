@@ -323,6 +323,7 @@ def go_really_fast():
     LOGGER.debug("Going really fast...")
 
     sleep_speed = 0
+    
     # Start counter at 1, end at 100, increment by 1
     for i in range(1, 101, 1):
         LOGGER.debug("counter = %s", i)
