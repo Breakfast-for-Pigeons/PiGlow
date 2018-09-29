@@ -421,7 +421,6 @@ def go_faster():
 
     # Start counter at 1, end at 20, increment by 1
     for i in range(1, 21, 1):
-        # Uncomment the following line for testing/debugging
         LOGGER.debug("counter = %s", i)
         # Turn on LEDs
         white_leds_on(sleep_speed)
