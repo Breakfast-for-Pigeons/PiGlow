@@ -71,19 +71,16 @@ def main():
     # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
 
-    sleep_speed = 1       # Pause 1 second before next snake
-    counter = 1
-
     try:
-        while counter < 4:
-            LOGGER.debug("counter = %s", counter)
+        # Start counter at 1, end at 3, increment by 1
+        for i in range(1, 4, 1):
+            LOGGER.debug("counter = %s", i)
             fading_snake_12()
-            sleep(sleep_speed)
+            sleep(1)
             fading_snake_23()
-            sleep(sleep_speed)
+            sleep(1)
             fading_snake_13()
-            sleep(sleep_speed)
-            counter += 1
+            sleep(1)
         stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
@@ -95,7 +92,7 @@ def fading_snake_12():
     Lights up the LEDs on arms 1 and 2 and fades them
     """
     LOGGER.debug("Fading Snake 1-2")
-    
+
     # Snake 12 LEDs (Same lights as Snake 21 - Since they are not
     # slithering, the order doesn't matter)
     snake_12_leds = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 18]
@@ -132,7 +129,6 @@ def fading_snake_12():
     sleep(0.1)
     PYGLOW.set_leds(snake_12_leds, 0)
     PYGLOW.update_leds()
-    sleep(0.1)
 
 
 def fading_snake_13():
@@ -140,7 +136,7 @@ def fading_snake_13():
     Lights up the LEDs on arms 1 and 3 and fades them
     """
     LOGGER.debug("Fading Snake 1-3")
-    
+
     # Snake 13 LEDs (Same lights as Snake 31 - Since they are not
     # slithering, the order doesn't matter)
     snake_13_leds = [1, 2, 3, 4, 5, 12, 13, 14, 15, 16, 17, 18]
@@ -177,7 +173,6 @@ def fading_snake_13():
     sleep(0.1)
     PYGLOW.set_leds(snake_13_leds, 0)
     PYGLOW.update_leds()
-    sleep(0.1)
 
 
 def fading_snake_23():
@@ -185,7 +180,7 @@ def fading_snake_23():
     Lights up the LEDs on arms 2 and 3 and fades them
     """
     LOGGER.debug("Fading Snake 2-3")
-    
+
     # Snake 23 LEDs (Same lights as Snake 32 - Since they are not
     # slithering, the order doesn't matter)
     snake_23_leds = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
@@ -222,7 +217,6 @@ def fading_snake_23():
     sleep(0.1)
     PYGLOW.set_leds(snake_23_leds, 0)
     PYGLOW.update_leds()
-    sleep(0.1)
 
 
 def delete_empty_logs():
