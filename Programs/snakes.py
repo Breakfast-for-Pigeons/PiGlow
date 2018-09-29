@@ -48,7 +48,7 @@ PYGLOW.all(0)
 LOG = 'snakes.log'
 LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
 LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.DEBUG)    # Nothing will log unless changed to DEBUG
+LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
 FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
                               datefmt='%m/%d/%y %I:%M:%S %p:')
 FILE_HANDLER = logging.FileHandler(LOG, 'w')
