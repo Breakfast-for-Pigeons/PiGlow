@@ -18,6 +18,8 @@ Requirements:
     PyGlow.py (many thanks to benleb for this program)
     print_piglow_header.py
 
+You will have these files if you downloaded the entire repository.
+
 ....................
 
 Author: Paul Ryan
@@ -68,14 +70,12 @@ def main():
     # Force white text after selecting random colored header
     print("\033[1;37;40mPress Ctrl-C to stop the program.")
 
-    counter = 1
-
     try:
-        while counter < 11:
-            LOGGER.debug("Swirling Vortex #%s", counter)
+        # Start counter at 1, end at 10, increment by 1
+        for i in range(1, 11, 1):
+            LOGGER.debug("Swirling Vortex #%s", i)
             swirling_vortex()
             sleep(1)
-            counter += 1
         stop()
     # Stop the program and turn off LEDs with Ctrl-C
     except KeyboardInterrupt:
