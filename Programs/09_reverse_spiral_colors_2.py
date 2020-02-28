@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Reverse Spiral Colors 2
 
@@ -8,7 +8,13 @@ Spiral Colors 2, but counter clockwise.
 ....................
 
 Functions:
-- reverse_sprial_colors: Lights up 1 color at a time
+- reverse_sprial_colors_2a: Lights up 1 color at a time
+- reverse_sprial_colors_2b: Sleep_speed goes from 0.05 to 0.01 in
+                            decrements of 0.0025
+- reverse_sprial_colors_2c: Sleep_speed  is 0.01. Cycle through the LEDS
+                            20 times
+- reverse_sprial_colors_2d: Sleep_speed is 0. Cycle through the LEDS 100
+                            times
 - red_leds_on: Lights up the red LEDs one at a time
 - red_leds_off: Turns off the red LEDs one at a time
 - orange_leds_on: Lights up the orange LEDs one at a time
@@ -21,17 +27,13 @@ Functions:
 - blue_leds_off: Turns off the blue LEDs one at a time
 - white_leds_on: : Lights up the  white LEDs one at a time
 - white_leds_off: Turns off the white LEDs one at a time
-- go_fast: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
-- go_faster: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
-- go_really_fast: Sleep_speed is 0. Cycle through the LEDS 100 times
-- delete_empty_logs: Deletes empty log fles
-- stop: Print exit message and turn off the PiGlow
+
 
 ....................
 
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
-    print_piglow_header.py
+    bfp_piglow_modules.py
 
 You will have these files if you downloaded the entire repository.
 
@@ -45,11 +47,13 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-import os
 import logging
 from time import sleep
 from PyGlow import PyGlow
-from print_piglow_header import print_piglow_header
+from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import delete_empty_logs
+from bfp_piglow_modules import stop
 
 ########################################################################
 #                           Initialize                                 #
@@ -61,41 +65,9 @@ PYGLOW.all(0)
 # Feel free to modify the brightness setting below
 LED_BRIGHTNESS = 100
 
-# Logging
-LOG = 'reverse_spiral_colors_2.log'
-LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
-FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
-                              datefmt='%m/%d/%y %I:%M:%S %p:')
-FILE_HANDLER = logging.FileHandler(LOG, 'w')
-FILE_HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(FILE_HANDLER)
-
 ########################################################################
 #                            Functions                                 #
 ########################################################################
-
-
-def main():
-    """
-    The main function
-    """
-    LOGGER.debug("START")
-
-    print_piglow_header()
-
-    # Force white text after selecting random colored header
-    print("\033[1;37;40mPress Ctrl-C to stop the program.")
-    try:
-        reverse_spiral_colors()
-        go_fast()
-        go_faster()
-        go_really_fast()
-        stop()
-    # Stop the program and turn off LEDs with Ctrl-C
-    except KeyboardInterrupt:
-        stop()
 
 
 def red_leds_on(sleep_speed):
@@ -362,10 +334,11 @@ def white_leds_off(sleep_speed):
     sleep(sleep_speed)
 
 
-def reverse_spiral_colors():
+def reverse_sprial_colors_2a():
     """
     Lights up 1 color at a time
     """
+    LOGGER.debug("Function: reverse_spiral_colors_2a")
     LOGGER.debug("Increasing speed...")
 
     sleep_speed = 0.25
@@ -390,10 +363,11 @@ def reverse_spiral_colors():
         sleep_speed -= 0.05
 
 
-def go_fast():
+def reverse_sprial_colors_2b():
     """
     Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
     """
+    LOGGER.debug("Function: reverse_spiral_colors_2b")
     LOGGER.debug("Going fast...")
 
     sleep_speed = 0.05
@@ -418,10 +392,11 @@ def go_fast():
         sleep_speed -= 0.0025
 
 
-def go_faster():
+def reverse_sprial_colors_2c():
     """
     Sleep_speed is 0.01. Cycle through the LEDS 20 times
     """
+    LOGGER.debug("Function: reverse_spiral_colors_2c")
     LOGGER.debug("Going faster...")
 
     sleep_speed = 0.01
@@ -445,10 +420,11 @@ def go_faster():
         red_leds_off(sleep_speed)
 
 
-def go_really_fast():
+def reverse_sprial_colors_2d():
     """
     Sleep_speed is 0. Cycle through the LEDS 100 times
     """
+    LOGGER.debug("Function: reverse_spiral_colors_2d")
     LOGGER.debug("Going really fast...")
 
     sleep_speed = 0
@@ -472,32 +448,42 @@ def go_really_fast():
         red_leds_off(sleep_speed)
 
 
-def delete_empty_logs():
+def main():
     """
-    Delete empty log fles
-
-    Log files will always be created. But they will be empty if the
-    log level is set to anything higher than DEBUG, since only DEBUG
-    messages are logged. If the log files are empty, they will be
-    deleted.
+    The main function
     """
-
-    logs = [LOG, 'print_piglow_header.log']
-
-    for log in logs:
-        if os.stat(log).st_size == 0:
-            os.remove(log)
-
-
-def stop():
-    """
-    Print exit message and turn off the PiGlow
-    """
+    LOGGER.debug("START")
+    reverse_sprial_colors_2a()
+    reverse_sprial_colors_2b()
+    reverse_sprial_colors_2c()
+    reverse_sprial_colors_2d()
     LOGGER.debug("END")
-    delete_empty_logs()
-    print("\nExiting program.")
-    PYGLOW.all(0)
+    delete_empty_logs(LOG)
+    stop()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        # STEP01: Check if Log directory exits.
+        check_log_directory()
+        # STEP02: Enable logging
+        LOG = 'Logs/09_reverse_spiral_colors_2.log'
+        LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
+                      %(levelname)s: %(message)s'
+        LOGGER = logging.getLogger(__name__)
+        # Nothing will log unless logging level is changed to DEBUG
+        LOGGER.setLevel(logging.ERROR)
+        FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                                      datefmt='%m/%d/%y %I:%M:%S %p:')
+        FILE_HANDLER = logging.FileHandler(LOG, 'w')
+        FILE_HANDLER.setFormatter(FORMATTER)
+        LOGGER.addHandler(FILE_HANDLER)
+        # STEP03: Print header
+        print_header()
+        # STEP04: Print instructions in white text
+        print("\033[1;37;40mPress Ctrl-C to stop the program.")
+        # STEP05: Run the main function
+        main()
+    except KeyboardInterrupt:
+        delete_empty_logs(LOG)
+        stop()
