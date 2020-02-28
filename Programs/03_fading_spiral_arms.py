@@ -32,9 +32,12 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import logging
 from time import sleep
 from PyGlow import PyGlow
 from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import delete_empty_logs
 from bfp_piglow_modules import stop
 
 ########################################################################
@@ -51,18 +54,22 @@ PYGLOW.all(0)
 
 def run_10_times(function_name):
     """
-
     This program will run a fuction 10 times.
-
+    
+    Argument: 
+        - function_name
     """
+    LOGGER.debug("Running 10 times...")
 
-    # Start counter at 1, end at 10
-    for _ in range(1, 10):
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("Running number %s", i)
         function_name()
 
 
 def fading_spiral_arms():
     """ Fades the spiral arms """
+    LOGGER.debug("Fading spiral arms...")
 
     sleep_speed = 0.01
 
@@ -805,15 +812,39 @@ def fading_spiral_arms():
     sleep(sleep_speed)
 
 
+def main():
+    """
+    This is the main function.
+    """
+    LOGGER.debug("START")
+    run_10_times(function_name=fading_spiral_arms)
+    LOGGER.debug("END")
+    delete_empty_logs(LOG)
+    stop()
+
+
 if __name__ == '__main__':
     try:
-        # STEP01: Print header
+        # STEP01: Check if Log directory exits.
+        check_log_directory()
+        # STEP02: Enable logging
+        LOG = 'Logs/03_fading_spiral_arms.log'
+        LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
+                      %(levelname)s: %(message)s'
+        LOGGER = logging.getLogger(__name__)
+        # Nothing will log unless logging level is changed to DEBUG
+        LOGGER.setLevel(logging.ERROR)
+        FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                                      datefmt='%m/%d/%y %I:%M:%S %p:')
+        FILE_HANDLER = logging.FileHandler(LOG, 'w')
+        FILE_HANDLER.setFormatter(FORMATTER)
+        LOGGER.addHandler(FILE_HANDLER)
+        # STEP03: Print header
         print_header()
-        # STEP02: Print instructions in white text
+        # STEP04: Print instructions in white text
         print("\033[1;37;40mPress Ctrl-C to stop the program.")
-        # STEP03:
-        run_10_times(function_name=fading_spiral_arms)
-        # STEP04: Exit the program.
-        stop()
+        # STEP05: Run the main function
+        main()
     except KeyboardInterrupt:
+        delete_empty_logs(LOG)
         stop()
