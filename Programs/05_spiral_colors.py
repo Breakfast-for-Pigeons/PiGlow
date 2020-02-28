@@ -10,10 +10,10 @@ entire process again.
 ....................
 
 Functions:
-- sprial_colors_1_1: Lights up 1 color at a time
-- sprial_colors_1_2: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
-- sprial_colors_1_3: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
-- sprial_colors_1_4: Sleep_speed is 0. Cycle through the LEDS 100 times
+- sprial_colors_1a: Lights up 1 color at a time
+- sprial_colors_1b: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
+- sprial_colors_1c: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
+- sprial_colors_1d: Sleep_speed is 0. Cycle through the LEDS 100 times
 - red_leds: Lights up the red LEDs one at a time
 - orange_leds: Lights up the orange LEDs one at a time
 - yellow_leds: Lights up the yellow LEDs one at a time
@@ -40,9 +40,12 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
+import logging
 from time import sleep
 from PyGlow import PyGlow
 from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import delete_empty_logs
 from bfp_piglow_modules import stop
 
 ########################################################################
@@ -204,7 +207,7 @@ def white_leds(sleep_speed):
     sleep(sleep_speed)
 
 
-def spiral_colors_1_1():
+def spiral_colors_1a():
     """
     Lights up and then turns off 1 color at a time. Turns on and off
     the red LED on arm 1, then the red LED on arm 2, then the red
@@ -213,10 +216,13 @@ def spiral_colors_1_1():
 
     Speed goes from 0.25 to 0.05 in decrements of 0.05
     """
+    LOGGER.debug("Function: spiral_colors_1a")
+    LOGGER.debug("Increasing speed...")
 
     sleep_speed = 0.25
 
     while sleep_speed > 0.05:
+        LOGGER.debug("The speed is now: %s", sleep_speed)
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -227,16 +233,19 @@ def spiral_colors_1_1():
         sleep_speed -= 0.05
 
 
-def spiral_colors_1_2():
+def spiral_colors_1b():
     """
-    Same as spiral_colors_1_1 except:
+    Same as spiral_colors_1a except:
 
     Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
     """
+    LOGGER.debug("Function: spiral_colors_1b")
+    LOGGER.debug("Increasing speed...")
 
     sleep_speed = 0.05
 
     while sleep_speed > 0.01:
+        LOGGER.debug("The speed is now: %s", sleep_speed)
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -247,15 +256,17 @@ def spiral_colors_1_2():
         sleep_speed -= 0.0025
 
 
-def spiral_colors_1_3():
+def spiral_colors_1c():
     """
     Sleep_speed is 0.01. Cycle through the LEDS 20 times
     """
+    LOGGER.debug("Function: spiral_colors_1c")
 
     sleep_speed = 0.01
 
-    # Start counter at 1, end at 20
-    for _ in range(1, 20):
+    # Start counter at 1, end at 20, increment by 1
+    for i in range(1, 21, 1):
+        LOGGER.debug("counter = %s", i)
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -264,15 +275,17 @@ def spiral_colors_1_3():
         white_leds(sleep_speed)
 
 
-def spiral_colors_1_4():
+def spiral_colors_1d():
     """
     Sleep_speed is 0. Cycle through the LEDs 100 times
     """
+    LOGGER.debug("Function: spiral_colors_1d")
 
     sleep_speed = 0
 
     # Start counter at 1, end at 100, increment by 1
-    for _ in range(1, 100):
+    for i in range(1, 101, 1):
+        LOGGER.debug("counter = %s", i)
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -281,18 +294,42 @@ def spiral_colors_1_4():
         white_leds(sleep_speed)
 
 
+def main():
+    """
+    This is the main function.
+    """
+    LOGGER.debug("START")
+    spiral_colors_1a()
+    spiral_colors_1b()
+    spiral_colors_1c()
+    spiral_colors_1d()
+    LOGGER.debug("END")
+    delete_empty_logs(LOG)
+    stop()
+
+
 if __name__ == '__main__':
     try:
-        # STEP01: Print header
+        # STEP01: Check if Log directory exits.
+        check_log_directory()
+        # STEP02: Enable logging
+        LOG = 'Logs/05_spiral_colors.log'
+        LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
+                      %(levelname)s: %(message)s'
+        LOGGER = logging.getLogger(__name__)
+        # Nothing will log unless logging level is changed to DEBUG
+        LOGGER.setLevel(logging.ERROR)
+        FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                                      datefmt='%m/%d/%y %I:%M:%S %p:')
+        FILE_HANDLER = logging.FileHandler(LOG, 'w')
+        FILE_HANDLER.setFormatter(FORMATTER)
+        LOGGER.addHandler(FILE_HANDLER)
+        # STEP03: Print header
         print_header()
-        # STEP02: Print instructions in white text
+        # STEP04: Print instructions in white text
         print("\033[1;37;40mPress Ctrl-C to stop the program.")
-        # STEP03: Run Spiral Colors
-        spiral_colors_1_1()
-        spiral_colors_1_2()
-        spiral_colors_1_3()
-        spiral_colors_1_4()
-        # STEP04: Exit the program.
-        stop()
+        # STEP05: Run the main function
+        main()
     except KeyboardInterrupt:
+        delete_empty_logs(LOG)
         stop()
