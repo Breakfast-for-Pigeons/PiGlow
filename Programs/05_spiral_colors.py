@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Spiral Colors
 
@@ -10,25 +10,25 @@ entire process again.
 ....................
 
 Functions:
-- sprial_colors: Lights up 1 color at a time
+- sprial_colors_1_1: Lights up 1 color at a time
+- sprial_colors_1_2: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
+- sprial_colors_1_3: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
+- sprial_colors_1_4: Sleep_speed is 0. Cycle through the LEDS 100 times
 - red_leds: Lights up the red LEDs one at a time
 - orange_leds: Lights up the orange LEDs one at a time
 - yellow_leds: Lights up the yellow LEDs one at a time
 - green_leds: Lights up the green LEDs one at a time
 - blue_leds: Lights up the blue LEDs one at a time
 - white_leds: :ights up the  white LEDs one at a time
-- go_fast: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
-- go_faster: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
-- go_really_fast: Sleep_speed is 0. Cycle through the LEDS 100 times
-- delete_empty_logs: Deletes empty log fles
-- stop: Print exit message and turn off the PiGlow
+
 
 ....................
 
 Requirements:
     PyGlow.py
-    print_pyglow_header.py
-   (You will have these files if you downloaded the entire repository)
+    bfp_piglow_modules.py
+
+You will have these files if you downloaded the entire repository
 
 ....................
 
@@ -40,11 +40,10 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-import os
-import logging
 from time import sleep
 from PyGlow import PyGlow
-from print_piglow_header import print_piglow_header
+from bfp_piglow_modules import print_header
+from bfp_piglow_modules import stop
 
 ########################################################################
 #                           Initialize                                 #
@@ -56,63 +55,9 @@ PYGLOW.all(0)
 # Feel free to modify the brightness setting below
 LED_BRIGHTNESS = 100
 
-# Logging
-LOG = 'spiral_colors.log'
-LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
-FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
-                              datefmt='%m/%d/%y %I:%M:%S %p:')
-FILE_HANDLER = logging.FileHandler(LOG, 'w')
-FILE_HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(FILE_HANDLER)
-
 ########################################################################
 #                            Functions                                 #
 ########################################################################
-
-
-def main():
-    """
-    The main function
-    """
-    LOGGER.debug("START")
-
-    print_piglow_header()
-
-    # Force white text after selecting random colored header
-    print("\033[1;37;40mPress Ctrl-C to stop the program.")
-    try:
-        spiral_colors()
-        go_fast()
-        go_faster()
-        go_really_fast()
-        stop()
-    # Stop the program and turn off LEDs with Ctrl-C
-    except KeyboardInterrupt:
-        stop()
-
-
-def spiral_colors():
-    """
-    Lights up 1 color at a time
-
-    Speed goes from 0.25 to 0.05 in decrements of 0.05
-    """
-    LOGGER.debug("Increasing speed...")
-
-    sleep_speed = 0.25
-
-    while sleep_speed > 0.05:
-        LOGGER.debug("The speed is now: %s", sleep_speed)
-        red_leds(sleep_speed)
-        orange_leds(sleep_speed)
-        yellow_leds(sleep_speed)
-        green_leds(sleep_speed)
-        blue_leds(sleep_speed)
-        white_leds(sleep_speed)
-        # Increase speed
-        sleep_speed -= 0.05
 
 
 def red_leds(sleep_speed):
@@ -259,16 +204,39 @@ def white_leds(sleep_speed):
     sleep(sleep_speed)
 
 
-def go_fast():
+def spiral_colors_1_1():
     """
+    Lights up and then turns off 1 color at a time. Turns on and off
+    the red LED on arm 1, then the red LED on arm 2, then the red
+    LED on arm 3. Then turns on and off each of the Orange LEDs. Then
+    yellow, green, blue, etc...
+
+    Speed goes from 0.25 to 0.05 in decrements of 0.05
+    """
+
+    sleep_speed = 0.25
+
+    while sleep_speed > 0.05:
+        red_leds(sleep_speed)
+        orange_leds(sleep_speed)
+        yellow_leds(sleep_speed)
+        green_leds(sleep_speed)
+        blue_leds(sleep_speed)
+        white_leds(sleep_speed)
+        # Increase speed
+        sleep_speed -= 0.05
+
+
+def spiral_colors_1_2():
+    """
+    Same as spiral_colors_1_1 except:
+
     Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
     """
-    LOGGER.debug("Going fast...")
 
     sleep_speed = 0.05
 
     while sleep_speed > 0.01:
-        LOGGER.debug("The sleep speed is = %s", sleep_speed)
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -279,17 +247,15 @@ def go_fast():
         sleep_speed -= 0.0025
 
 
-def go_faster():
+def spiral_colors_1_3():
     """
     Sleep_speed is 0.01. Cycle through the LEDS 20 times
     """
-    LOGGER.debug("Going faster...")
 
     sleep_speed = 0.01
 
-    # Start counter at 1, end at 20, increment by 1
-    for i in range(1, 21, 1):
-        LOGGER.debug("counter = %s", i)
+    # Start counter at 1, end at 20
+    for _ in range(1, 20):
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -297,17 +263,16 @@ def go_faster():
         blue_leds(sleep_speed)
         white_leds(sleep_speed)
 
-def go_really_fast():
+
+def spiral_colors_1_4():
     """
     Sleep_speed is 0. Cycle through the LEDs 100 times
     """
-    LOGGER.debug("Going really fast...")
 
     sleep_speed = 0
 
     # Start counter at 1, end at 100, increment by 1
-    for i in range(1, 101, 1):
-        LOGGER.debug("counter = %s", i)
+    for _ in range(1, 100):
         red_leds(sleep_speed)
         orange_leds(sleep_speed)
         yellow_leds(sleep_speed)
@@ -316,32 +281,18 @@ def go_really_fast():
         white_leds(sleep_speed)
 
 
-def delete_empty_logs():
-    """
-    Delete empty log fles
-
-    Log files will always be created. But they will be empty if the
-    log level is set to anything higher than DEBUG, since only DEBUG
-    messages are logged. If the log files are empty, they will be
-    deleted.
-    """
-
-    logs = [LOG, 'print_piglow_header.log']
-
-    for log in logs:
-        if os.stat(log).st_size == 0:
-            os.remove(log)
-
-
-def stop():
-    """
-    Print exit message and turn off the PiGlow
-    """
-    LOGGER.debug("END")
-    delete_empty_logs()
-    print("\nExiting program.")
-    PYGLOW.all(0)
-
-
 if __name__ == '__main__':
-    main()
+    try:
+        # STEP01: Print header
+        print_header()
+        # STEP02: Print instructions in white text
+        print("\033[1;37;40mPress Ctrl-C to stop the program.")
+        # STEP03: Run Spiral Colors
+        spiral_colors_1_1()
+        spiral_colors_1_2()
+        spiral_colors_1_3()
+        spiral_colors_1_4()
+        # STEP04: Exit the program.
+        stop()
+    except KeyboardInterrupt:
+        stop()
