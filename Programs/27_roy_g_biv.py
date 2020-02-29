@@ -10,7 +10,7 @@ speed and then goes through the entire process again.
 
 Functions:
 
-- roy_g_biv: Controls which fuse to light
+- roy_g_biv: Starts with red and ends with white
 - increase_speed: Gradually increases the speed
 - go_fast: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
 - go_faster: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
@@ -71,7 +71,7 @@ def increase_speed():
 
 def roy_g_biv(sleep_speed):
     """
-    Cylces through all the colors
+    Cylces through all the colors, red to white
     """
     PYGLOW.color("red", 100)
     sleep(sleep_speed)
