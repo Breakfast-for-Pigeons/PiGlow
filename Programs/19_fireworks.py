@@ -1,22 +1,15 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
-Swirling Vortex
+Fireworks
 
-This program lights up the LEDs one at a time then
-then fades them on all 3 arms at the same time.
-
-....................
-
-Functions:
-- swirling_vortex: Lights up 1 color at a time, Fades colors
-- delete_empty_logs: Deletes empty log fles
-- stop: Print exit message and turn off the PiGlow
+This program lights up the LEDs from the inside out, and then fades
+them - making it look like exploding fireworks.
 
 ....................
 
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
-    print_piglow_header.py
+    bfp_piglow_modules.py
 
 You will have these files if you downloaded the entire repository.
 
@@ -30,11 +23,13 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-import os
 import logging
 from time import sleep
 from PyGlow import PyGlow
-from print_piglow_header import print_piglow_header
+from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import delete_empty_logs
+from bfp_piglow_modules import stop
 
 ########################################################################
 #                           Initialize                                 #
@@ -43,47 +38,15 @@ from print_piglow_header import print_piglow_header
 PYGLOW = PyGlow()
 PYGLOW.all(0)
 
-# Logging
-LOG = 'fireworks.log'
-LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
-FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
-                              datefmt='%m/%d/%y %I:%M:%S %p:')
-FILE_HANDLER = logging.FileHandler(LOG, 'w')
-FILE_HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(FILE_HANDLER)
-
 ########################################################################
 #                            Functions                                 #
 ########################################################################
 
 
-def main():
-    """
-    The main function
-    """
-    LOGGER.debug("START")
-
-    print_piglow_header()
-
-    # Force white text after selecting random colored header
-    print("\033[1;37;40mPress Ctrl-C to stop the program.")
-
-    try:
-        # Start counter at 1, end at 10, increment by 1
-        for i in range(1, 11, 1):
-            LOGGER.debug("Fireworks #%s", i)
-            fireworks()
-        stop()
-    # Stop the program and turn off LEDs with Ctrl-C
-    except KeyboardInterrupt:
-        stop()
-
-
 def fireworks():
     """
-    Lights up 1 color at a time, Fades colors
+    This program lights up the LEDs from the inside out, and then fades
+    them - making it look like exploding fireworks.
     """
 
     sleep_speed = 0.025
@@ -193,32 +156,45 @@ def fireworks():
     sleep(1)
 
 
-def delete_empty_logs():
+def main():
     """
-    Delete empty log fles
-
-    Log files will always be created. But they will be empty if the
-    log level is set to anything higher than DEBUG, since only DEBUG
-    messages are logged. If the log files are empty, they will be
-    deleted.
+    The main function
     """
+    LOGGER.debug("START")
 
-    logs = [LOG, 'print_piglow_header.log']
+    # Start counter at 1, end at 10, increment by 1
+    for i in range(1, 11, 1):
+        LOGGER.debug("Fireworks #%s", i)
+        fireworks()
 
-    for log in logs:
-        if os.stat(log).st_size == 0:
-            os.remove(log)
-
-
-def stop():
-    """
-    Print exit message and turn off the PiGlow
-    """
     LOGGER.debug("END")
-    delete_empty_logs()
-    print("\nExiting program.")
-    PYGLOW.all(0)
+
+    delete_empty_logs(LOG)
+    stop()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        # STEP01: Check if Log directory exists.
+        check_log_directory()
+        # STEP02: Enable logging
+        LOG = 'Logs/19_firworks.log'
+        LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
+                      %(levelname)s: %(message)s'
+        LOGGER = logging.getLogger(__name__)
+        # Nothing will log unless logging level is changed to DEBUG
+        LOGGER.setLevel(logging.ERROR)
+        FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                                      datefmt='%m/%d/%y %I:%M:%S %p:')
+        FILE_HANDLER = logging.FileHandler(LOG, 'w')
+        FILE_HANDLER.setFormatter(FORMATTER)
+        LOGGER.addHandler(FILE_HANDLER)
+        # STEP03: Print header
+        print_header()
+        # STEP04: Print instructions in white text
+        print("\033[1;37;40mPress Ctrl-C to stop the program.")
+        # STEP05: Run the main function
+        main()
+    except KeyboardInterrupt:
+        delete_empty_logs(LOG)
+        stop()
