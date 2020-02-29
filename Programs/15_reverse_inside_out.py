@@ -310,7 +310,7 @@ def main():
 
 if __name__ == '__main__':
     try:
-        # STEP01: Check if Log directory exits.
+        # STEP01: Check if Log directory exists.
         check_log_directory()
         # STEP02: Enable logging
         LOG = 'Logs/15_reverse_inside_out.log'
