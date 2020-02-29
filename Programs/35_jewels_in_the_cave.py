@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Jewels in the Cave
 
@@ -22,7 +22,7 @@ Functions:
 
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
-    print_piglow_header.py
+    bfp_piglow_modules.py
 
 You will have these files if you downloaded the entire repository.
 
@@ -36,12 +36,12 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-import os
-import logging
 import random
 from time import sleep
 from PyGlow import PyGlow
-from print_piglow_header import print_piglow_header
+from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import stop
 
 ########################################################################
 #                           Initialize                                 #
@@ -52,35 +52,9 @@ PYGLOW.all(0)
 
 SLEEP_SPEED = 0.10
 
-# Logging
-LOG = 'jewels_in_the_cave.log'
-LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
-FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
-                              datefmt='%m/%d/%y %I:%M:%S %p:')
-FILE_HANDLER = logging.FileHandler(LOG, 'w')
-FILE_HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(FILE_HANDLER)
-
 ########################################################################
 #                            Functions                                 #
 ########################################################################
-
-
-def main():
-    """ The main fuction """
-
-    print_piglow_header()
-
-    # Force white text after selecting random colored header
-    print("\033[1;37;40mPress Ctrl-C to stop the program.")
-    try:
-        while True:
-            jewels_in_the_cave()
-    # Stop the program and turn off LEDs with Ctrl-C
-    except KeyboardInterrupt:
-        stop()
 
 
 def jewels_in_the_cave():
@@ -104,32 +78,22 @@ def jewels_in_the_cave():
     sleep(sleep_speed)
 
 
-def delete_empty_logs():
-    """
-    Delete empty log fles
+def main():
+    """ The main fuction """
 
-    Log files will always be created. But they will be empty if the
-    log level is set to anything higher than DEBUG, since only DEBUG
-    messages are logged. If the log files are empty, they will be
-    deleted.
-    """
-
-    logs = [LOG, 'print_piglow_header.log']
-
-    for log in logs:
-        if os.stat(log).st_size == 0:
-            os.remove(log)
-
-
-def stop():
-    """
-    Print exit message and turn off the PiGlow
-    """
-    LOGGER.debug("END")
-    delete_empty_logs()
-    print("\nExiting program.")
-    PYGLOW.all(0)
+    while True:
+        jewels_in_the_cave()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        # STEP01: Check if Log directory exists.
+        check_log_directory()
+        # STEP02: Print header
+        print_header()
+        # STEP03: Print instructions in white text
+        print("\033[1;37;40mPress Ctrl-C to stop the program.")
+        # STEP04: Run the main function
+        main()
+    except KeyboardInterrupt:
+        stop()
