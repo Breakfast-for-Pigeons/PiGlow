@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Roy G. Biv
 
@@ -15,14 +15,12 @@ Functions:
 - go_fast: Sleep_speed goes from 0.05 to 0.01 in decrements of 0.0025
 - go_faster: Sleep_speed  is 0.01. Cycle through the LEDS 20 times
 - go_really_fast: Sleep_speed is 0. Cycle through the LEDS 100 times
-- delete_empty_logs: Deletes empty log fles
-- stop: Print exit message and turn off the PiGlow
 
 ....................
 
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
-    print_piglow_header.py
+    bfp_piglow_modules.py
 
 You will have these files if you downloaded the entire repository.
 
@@ -36,11 +34,13 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-import os
 import logging
 from time import sleep
 from PyGlow import PyGlow
-from print_piglow_header import print_piglow_header
+from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import delete_empty_logs
+from bfp_piglow_modules import stop
 
 ########################################################################
 #                           Initialize                                 #
@@ -49,41 +49,9 @@ from print_piglow_header import print_piglow_header
 PYGLOW = PyGlow()
 PYGLOW.all(0)
 
-# Logging
-LOG = 'roy_g_biv.log'
-LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
-FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
-                              datefmt='%m/%d/%y %I:%M:%S %p:')
-FILE_HANDLER = logging.FileHandler(LOG, 'w')
-FILE_HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(FILE_HANDLER)
-
 ########################################################################
 #                            Functions                                 #
 ########################################################################
-
-
-def main():
-    """
-    The main function
-    """
-    LOGGER.debug("START")
-
-    print_piglow_header()
-
-    # Force white text after selecting random colored header
-    print("\033[1;37;40mPress Ctrl-C to stop the program.")
-    try:
-        increase_speed()
-        go_fast()
-        go_faster()
-        go_really_fast()
-        stop()
-    # Stop the program and turn off LEDs with Ctrl-C
-    except KeyboardInterrupt:
-        stop()
 
 
 def increase_speed():
@@ -169,32 +137,45 @@ def go_really_fast():
     sleep(2)
 
 
-def delete_empty_logs():
+def main():
     """
-    Delete empty log fles
-
-    Log files will always be created. But they will be empty if the
-    log level is set to anything higher than DEBUG, since only DEBUG
-    messages are logged. If the log files are empty, they will be
-    deleted.
+    The main function
     """
+    LOGGER.debug("START")
 
-    logs = [LOG, 'print_piglow_header.log']
+    increase_speed()
+    go_fast()
+    go_faster()
+    go_really_fast()
 
-    for log in logs:
-        if os.stat(log).st_size == 0:
-            os.remove(log)
-
-
-def stop():
-    """
-    Print exit message and turn off the PiGlow
-    """
     LOGGER.debug("END")
-    delete_empty_logs()
-    print("\nExiting program.")
-    PYGLOW.all(0)
+
+    delete_empty_logs(LOG)
+    stop()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        # STEP01: Check if Log directory exists.
+        check_log_directory()
+        # STEP02: Enable logging
+        LOG = 'Logs/27_roy_g_biv.log'
+        LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
+                      %(levelname)s: %(message)s'
+        LOGGER = logging.getLogger(__name__)
+        # Nothing will log unless logging level is changed to DEBUG
+        LOGGER.setLevel(logging.ERROR)
+        FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                                      datefmt='%m/%d/%y %I:%M:%S %p:')
+        FILE_HANDLER = logging.FileHandler(LOG, 'w')
+        FILE_HANDLER.setFormatter(FORMATTER)
+        LOGGER.addHandler(FILE_HANDLER)
+        # STEP03: Print header
+        print_header()
+        # STEP04: Print instructions in white text
+        print("\033[1;37;40mPress Ctrl-C to stop the program.")
+        # STEP05: Run the main function
+        main()
+    except KeyboardInterrupt:
+        delete_empty_logs(LOG)
+        stop()
