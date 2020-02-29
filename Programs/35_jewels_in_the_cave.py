@@ -40,7 +40,6 @@ import random
 from time import sleep
 from PyGlow import PyGlow
 from bfp_piglow_modules import print_header
-from bfp_piglow_modules import check_log_directory
 from bfp_piglow_modules import stop
 
 ########################################################################
@@ -87,11 +86,9 @@ def main():
 
 if __name__ == '__main__':
     try:
-        # STEP01: Check if Log directory exists.
-        check_log_directory()
-        # STEP02: Print header
+        # STEP01: Print header
         print_header()
-        # STEP03: Print instructions in white text
+        # STEP02: Print instructions in white text
         print("\033[1;37;40mPress Ctrl-C to stop the program.")
         # STEP04: Run the main function
         main()
