@@ -154,7 +154,7 @@ if __name__ == '__main__':
         # STEP01: Check if Log directory exists.
         check_log_directory()
         # STEP02: Enable logging
-        LOG = 'Logs/30_pulsing_snakes.log'
+        LOG = 'Logs/pulsing_snakes.log'
         LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
                       %(levelname)s: %(message)s'
         LOGGER = logging.getLogger(__name__)
