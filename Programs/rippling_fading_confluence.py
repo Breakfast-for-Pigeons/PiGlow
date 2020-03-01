@@ -1741,7 +1741,7 @@ if __name__ == '__main__':
         # STEP01: Check if Log directory exists.
         check_log_directory()
         # STEP02: Enable logging
-        LOG = 'Logs/40_rippling_fading_confluence.log'
+        LOG = 'Logs/rippling_fading_confluence.log'
         LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
                       %(levelname)s: %(message)s'
         LOGGER = logging.getLogger(__name__)
