@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 """
 Metachronal Millipedes
 
@@ -18,14 +18,12 @@ Functions:
 - millipede_23: Lights up and "ripples" the LEDs on arms 2 and 3
 - millipede_31: Lights up and "ripples" the LEDs on arms 3 and 1
 - millipede_32: Lights up and "ripples" the LEDs on arms 3 and 2
-- delete_empty_logs: Deletes empty log fles
-- stop: Print exit message and turn off the PiGlow
 
 ....................
 
 Requirements:
     PyGlow.py (many thanks to benleb for this program)
-    print_piglow_header.py
+    bfp_piglow_modules.py
 
 You will have these files if you downloaded the entire repository.
 
@@ -39,12 +37,14 @@ This program was written on a Raspberry Pi using the Geany IDE.
 #                          Import modules                              #
 ########################################################################
 
-import os
 import random
 import logging
 from time import sleep
 from PyGlow import PyGlow
-from print_piglow_header import print_piglow_header
+from bfp_piglow_modules import print_header
+from bfp_piglow_modules import check_log_directory
+from bfp_piglow_modules import delete_empty_logs
+from bfp_piglow_modules import stop
 
 ########################################################################
 #                           Initialize                                 #
@@ -55,53 +55,9 @@ PYGLOW.all(0)
 
 SLEEP_SPEED = 0.10
 
-# Logging
-LOG = 'metachronal_millipedes.log'
-LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: %(levelname)s: %(message)s'
-LOGGER = logging.getLogger(__name__)
-LOGGER.setLevel(logging.ERROR)    # Nothing will log unless changed to DEBUG
-FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
-                              datefmt='%m/%d/%y %I:%M:%S %p:')
-FILE_HANDLER = logging.FileHandler(LOG, 'w')
-FILE_HANDLER.setFormatter(FORMATTER)
-LOGGER.addHandler(FILE_HANDLER)
-
 ########################################################################
 #                            Functions                                 #
 ########################################################################
-
-
-def main():
-    """
-    The main function
-    """
-
-    millipede_ripple_speeds = [0.1, 0.075, 0.05, 0.025]
-
-    millipedes = [millipede_12, millipede_13, millipede_21, millipede_23,
-                  millipede_31, millipede_32]
-
-    LOGGER.debug("START")
-
-    print_piglow_header()
-
-    # Force white text after selecting random colored header
-    print("\033[1;37;40mPress Ctrl-C to stop the program.")
-    try:
-        # Random Slow millipede
-        random.choice(millipedes)(0.1)
-        # Random Slow/Medium millipede
-        random.choice(millipedes)(0.075)
-        # Random Medium millipede
-        random.choice(millipedes)(0.05)
-        # Random Fast millipede
-        random.choice(millipedes)(0.025)
-        # Random millipede, Random Speed
-        random.choice(millipedes)(random.choice(millipede_ripple_speeds))
-        stop()
-    # Stop the program and turn off LEDs with Ctrl-C
-    except KeyboardInterrupt:
-        stop()
 
 
 def millipede_12(ripple_speed):
@@ -4180,32 +4136,57 @@ def millipede_32(ripple_speed):
     sleep(1)
 
 
-def delete_empty_logs():
+def main():
     """
-    Delete empty log fles
-
-    Log files will always be created. But they will be empty if the
-    log level is set to anything higher than DEBUG, since only DEBUG
-    messages are logged. If the log files are empty, they will be
-    deleted.
+    The main function
     """
 
-    logs = [LOG, 'print_piglow_header.log']
+    millipede_ripple_speeds = [0.1, 0.075, 0.05, 0.025]
 
-    for log in logs:
-        if os.stat(log).st_size == 0:
-            os.remove(log)
+    millipedes = [millipede_12, millipede_13, millipede_21, millipede_23,
+                  millipede_31, millipede_32]
 
+    LOGGER.debug("START")
 
-def stop():
-    """
-    Print exit message and turn off the PiGlow
-    """
+    # Random Slow millipede
+    random.choice(millipedes)(0.1)
+    # Random Slow/Medium millipede
+    random.choice(millipedes)(0.075)
+    # Random Medium millipede
+    random.choice(millipedes)(0.05)
+    # Random Fast millipede
+    random.choice(millipedes)(0.025)
+    # Random millipede, Random Speed
+    random.choice(millipedes)(random.choice(millipede_ripple_speeds))
+
     LOGGER.debug("END")
-    delete_empty_logs()
-    print("\nExiting program.")
-    PYGLOW.all(0)
+
+    delete_empty_logs(LOG)
+    stop()
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        # STEP01: Check if Log directory exists.
+        check_log_directory()
+        # STEP02: Enable logging
+        LOG = 'Logs/41_metachronal_millipedes.log'
+        LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
+                      %(levelname)s: %(message)s'
+        LOGGER = logging.getLogger(__name__)
+        # Nothing will log unless logging level is changed to DEBUG
+        LOGGER.setLevel(logging.ERROR)
+        FORMATTER = logging.Formatter(fmt=LOG_FORMAT,
+                                      datefmt='%m/%d/%y %I:%M:%S %p:')
+        FILE_HANDLER = logging.FileHandler(LOG, 'w')
+        FILE_HANDLER.setFormatter(FORMATTER)
+        LOGGER.addHandler(FILE_HANDLER)
+        # STEP03: Print header
+        print_header()
+        # STEP04: Print instructions in white text
+        print("\033[1;37;40mPress Ctrl-C to stop the program.")
+        # STEP05: Run the main function
+        main()
+    except KeyboardInterrupt:
+        delete_empty_logs(LOG)
+        stop()
