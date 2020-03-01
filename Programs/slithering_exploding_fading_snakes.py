@@ -1178,7 +1178,7 @@ if __name__ == '__main__':
         # STEP01: Check if Log directory exists.
         check_log_directory()
         # STEP02: Enable logging
-        LOG = 'Logs/34_slithering_exploding_fading_snakes.log'
+        LOG = 'Logs/slithering_exploding_fading_snakes.log'
         LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
                       %(levelname)s: %(message)s'
         LOGGER = logging.getLogger(__name__)
