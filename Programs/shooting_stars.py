@@ -431,7 +431,7 @@ if __name__ == '__main__':
         # STEP01: Check if Log directory exits.
         check_log_directory()
         # STEP02: Enable logging
-        LOG = 'Logs/04_shooting_stars.log'
+        LOG = 'Logs/shooting_stars.log'
         LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
                       %(levelname)s: %(message)s'
         LOGGER = logging.getLogger(__name__)
