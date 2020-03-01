@@ -828,7 +828,7 @@ if __name__ == '__main__':
         # STEP01: Check if Log directory exits.
         check_log_directory()
         # STEP02: Enable logging
-        LOG = 'Logs/03_fading_spiral_arms.log'
+        LOG = 'Logs/fading_spiral_arms.log'
         LOG_FORMAT = '%(asctime)s %(name)s: %(funcName)s: \
                       %(levelname)s: %(message)s'
         LOGGER = logging.getLogger(__name__)
