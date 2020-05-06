@@ -3,7 +3,7 @@
 These are the programs that I wrote for the PiGlow. There are over 40 of them. They are written in Python 3.
 These programs require benleb's Pyglow module (https://github.com/benleb/PyGlow) that I got by following the instructions on this github page: 
 https://github.com/raspberrypilearning/piglow. 
-Once you follow those setup instructions, you can run my programs. 
+I included the PyGlow module for your convenience.
 
 Enjoy.
 
